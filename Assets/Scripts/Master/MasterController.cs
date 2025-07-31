@@ -32,6 +32,7 @@ public class MasterController : MonoBehaviour
     public bool ifSeeCat = false;
     
     public List<ItemBase> ItemToFixList = new List<ItemBase>(3);
+    public List<ItemBase> BrokenItemList = new List<ItemBase>(3);
     
     //public List<Transform> NoiseSourceList = new List<Transform>(3);
     public Transform NoiseSource;
@@ -49,7 +50,17 @@ public class MasterController : MonoBehaviour
 
     #endregion
 
+
+    private void OnEnable()
+    {
+        EventHandler.OnNoiseEventHappen += OnHearNoise;
+    }
     
+    private void OnDisable()
+    {
+        EventHandler.OnNoiseEventHappen -= OnHearNoise;
+    }
+
     private void Awake()
     {
         StateMachine = new MasterStateMachine();
@@ -98,6 +109,16 @@ public class MasterController : MonoBehaviour
     public void SearchAroundSelf()
     {
         // Check Items and Dog
+        float posDiff = Dog.position.x - this.transform.position.x;
+        if (Math.Abs(posDiff) < 3 * DogLength)
+            HasDogAround = true;
+        else
+            HasDogAround = false;
+    }
+
+    public void OnItemBroke(ItemBase item)
+    {
+        BrokenItemList.Add(item);
     }
 
     /// <summary>
