@@ -32,7 +32,7 @@ public class MasterAlertState : MasterState
             return;
         }
         
-        Vector3 targetPos = master.NoiseSource.position;
+        Vector3 targetPos = master.AttentionEvent.EventPlaceTrans.position;
         
         // 前往关注事件位置
         master.transform.position = Vector3.MoveTowards(
@@ -53,7 +53,8 @@ public class MasterAlertState : MasterState
                 
                 if (!master.HasDogAround)
                 {
-                    if (master.ItemToFixList.Count > 0)     // has something to fix
+                    // 有东西要修理 / 有客人来访
+                    if (master.ItemToFixList.Count > 0 || master.AttentionEvent.EventType == AttentionEventType.GuestArrive)
                         master.StateMachine.ChangeState(master.BusyState);
                     else
                         master.StateMachine.ChangeState(master.IdleState);

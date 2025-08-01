@@ -3,14 +3,14 @@ using UnityEngine;
 
 public static class EventHandler
 {
-    public static event Action<Transform> OnNoiseEventHappen;
+    public static event Action<AttentionEvent> OnAttentionEventHappen;
     public static event Action OnCatCaught;
     public static event Action<ItemBase> OnItemBroke;
     
-    public static void NoiseEventHappen(Transform noiseSource)
+    public static void AttentionEventHappen(AttentionEvent attentionEvent)
     {
-        if (OnNoiseEventHappen != null)
-            OnNoiseEventHappen(noiseSource);
+        if (OnAttentionEventHappen != null)
+            OnAttentionEventHappen(attentionEvent);
     }
     
     public static void CatchCat()

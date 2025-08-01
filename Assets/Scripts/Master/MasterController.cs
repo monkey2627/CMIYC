@@ -35,7 +35,8 @@ public class MasterController : MonoBehaviour
     public List<ItemBase> BrokenItemList = new List<ItemBase>(3);
     
     //public List<Transform> NoiseSourceList = new List<Transform>(3);
-    public Transform NoiseSource;
+    [SerializeField]
+    public AttentionEvent AttentionEvent;
     
     private Animator Animator;
 
@@ -53,12 +54,12 @@ public class MasterController : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler.OnNoiseEventHappen += OnHearNoise;
+        EventHandler.OnAttentionEventHappen += OnAttentionEventHappen;
     }
     
     private void OnDisable()
     {
-        EventHandler.OnNoiseEventHappen -= OnHearNoise;
+        EventHandler.OnAttentionEventHappen -= OnAttentionEventHappen;
     }
 
     private void Awake()
@@ -124,8 +125,8 @@ public class MasterController : MonoBehaviour
     /// <summary>
     /// 当出现了关注事件，尝试更新警戒行为的目的地
     /// </summary>
-    /// <param name="noisePlace">发出动静的位置</param>
-    public void OnHearNoise(Transform noisePlace)
+    /// <param name="attentionEvent">发生的关注事件</param>
+    public void OnAttentionEventHappen(AttentionEvent attentionEvent)
     {
         /*// 当前已经到达某个关注事件的位置，处理中
         if (StateMachine.CurState == AlertState && IsObserving == true)
@@ -133,7 +134,7 @@ public class MasterController : MonoBehaviour
             return;
         }*/
         
-        NoiseSource = noisePlace;
+        AttentionEvent = attentionEvent;
     }
     
 
