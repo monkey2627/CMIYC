@@ -21,4 +21,10 @@ public class Paint : ItemBase
     {
         
     }
+    
+    public override void inter()
+    {
+        base.inter();
+        TipPopManager.instance.ShowTip("Painting");
+    }
 }

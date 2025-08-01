@@ -10,12 +10,11 @@ public class GasStove : ItemBase
     {
         base.inter();
         if (!enable) return;
-        //¹Ø±ÕÈ¼ÆøÔî
+        //ï¿½Ø±ï¿½È¼ï¿½ï¿½ï¿½ï¿½
 
-        //ÛáÛöÍ£Ö¹Ã°ÑÌ
+        //ï¿½ï¿½ï¿½ï¿½Í£Ö¹Ã°ï¿½ï¿½
 
         enable = false;
-
     }
     public override void Show()
     {

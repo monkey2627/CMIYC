@@ -16,18 +16,18 @@ public class Crucible : ItemBase
         }
     }
 
-    public void OnStoveStateChnage(bool isOn)
+    public void OnStoveStateChange(bool isOn)
     {
         isSmoking = isOn;
     }
 
     void OnEnable()
     {
-        EventHandler.OnStoveStateChnage += OnStoveStateChnage;
+        EventHandler.OnStoveStateChange += OnStoveStateChange;
     }
 
     private void OnDisable()
     {
-        EventHandler.OnStoveStateChnage -= OnStoveStateChnage;
+        EventHandler.OnStoveStateChange -= OnStoveStateChange;
     }
 }
