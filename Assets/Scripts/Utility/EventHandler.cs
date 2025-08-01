@@ -6,6 +6,7 @@ public static class EventHandler
     public static event Action<AttentionEvent> OnAttentionEventHappen;
     public static event Action OnCatCaught;
     public static event Action<ItemBase> OnItemBroke;
+    public static event Action<bool> OnStoveStateChnage;
     
     public static void AttentionEventHappen(AttentionEvent attentionEvent)
     {
@@ -23,5 +24,11 @@ public static class EventHandler
     {
         if (OnItemBroke != null)
             OnItemBroke(item);
+    }
+    
+    public static void StoveStateChnage(bool isOn)
+    {
+        if (OnStoveStateChnage != null)
+            OnStoveStateChnage(isOn);
     }
 }
