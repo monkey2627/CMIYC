@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum InterType
+{
+    
+}
 public class ItemBase : MonoBehaviour
 {
     private bool isMoving = false;
@@ -32,18 +35,18 @@ public class ItemBase : MonoBehaviour
     /// <summary>
     /// 不可移动的物体被撞击时，其上物体掉下
     /// </summary>
-    public void DropThings()
+    public virtual void DropThings()
     {
 
     }
     /// <summary>
     /// 猫咪观察时展示
     /// </summary>
-    public void Show()
+    public virtual void Show()
     {
 
     }
-    public void Hide()
+    public virtual void Hide()
     {
 
     }

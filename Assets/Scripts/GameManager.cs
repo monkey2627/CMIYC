@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public int level;
     public static GameManager instance;
-    public SceneManager[] scenes;
+    public SceneBase[] scenes;
     public int sceneNow;
     private void Awake()
     {
@@ -15,13 +15,17 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartNewGame();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void StartNewGame()
+    {
+        Cat.instance.sceneNow = scenes[0];
     }
     public void AddScene()
     {

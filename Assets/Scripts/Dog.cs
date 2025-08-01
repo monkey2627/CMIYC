@@ -9,7 +9,7 @@ public class Dog : ItemBase
     public float waitTime = 5.0f; // 等待时间
     public Transform home; // 狗窝的位置
     public Rigidbody rb; // 狗的 Rigidbody 组件
-
+    public GameObject delay;
     private float timer = 0.0f; // 计时器
     private bool isMoving2Cat = false; // 是否正在移动
     private bool isByCat = false;//是否已经走到小猫旁边并坐下
@@ -17,28 +17,75 @@ public class Dog : ItemBase
     public bool isDashing = false; // 是否正在冲刺
     private bool isDodging = false; // 是否正在后退
     public Vector3 dashDirection; // 冲刺方向
-    public Vector3 dashTarget; // 冲刺方向
+    public float dashTarget; 
     public bool hasCat;
+    public bool seePendant;//是否在看吊灯
+    Animator animator;
+    private void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator = GetComponent<Animator>();   
     }
+
     public override void inter()
     {
         base.inter();
         // 抓挠狗，触发狗的后退和狂吠行为
         DodgeCat();
     }
+    public float speed = 5;
     // Update is called once per frame
     void Update()
     {
-        if (hasCat)
+        if (hasCat && !Cat.instance.isJumping)
         {
-            transform.position += new Vector3(gap.x, 0, gap.z);
-        }
+            #region move
+            float moveHorizontal = 0.0f;
+            float moveVertical = 0.0f;
+            bool move = false;
+            if (Input.GetKey(KeyCode.A)) // 按下 A 键
+            {
 
-        if(isMoving2Cat)
+                move = true;
+                moveHorizontal = -1.0f; // 向左移动
+            }
+            else if (Input.GetKey(KeyCode.D)) // 按下 D 键
+            {
+                move = true;
+                moveHorizontal = 1.0f; // 向右移动
+            }
+
+            if (Input.GetKey(KeyCode.W)) // 按下 W 键
+            {
+                move = true;
+                moveVertical = 1.0f; // 向前移动
+            }
+            else if (Input.GetKey(KeyCode.S)) // 按下 S 键
+            {
+                move = true;
+                moveVertical = -1.0f; // 向后移动
+            }
+            else
+            {
+                animator.SetBool("Walk", move);
+                if (move)
+                {
+                    Cat.instance.jumpCount = 0;
+                    Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+                    animator.SetFloat("Horiziontal", movement.x);
+                    Cat.instance.gameObject.GetComponent<Animator>().SetFloat("WalkDirection", movement.normalized.x);
+                    animator.SetFloat("WalkDirection", movement.normalized.x);
+                    transform.Translate(movement * speed * Time.deltaTime);
+                }
+            }
+            #endregion
+
+        }
+        if (isMoving2Cat)
         {
             // 等待计时
             timer += Time.deltaTime;
@@ -57,7 +104,15 @@ public class Dog : ItemBase
             Dash();
         }
     }
-    Vector3 gap;
+    /// <summary>
+    /// 狗抓挠吸引主人
+    /// </summary>
+    public void Scratch()
+    {
+        AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.DogDestruction);
+        EventHandler.AttentionEventHappen(attentionEvent);
+    }
+    public Vector3 gap;
     /// <summary>
     /// 若狗在任意状态下被猫跳到了身上，则立刻解除之前的一切状态并受玩家操控
     /// (可以左右移动但不能跳跃，
@@ -69,7 +124,11 @@ public class Dog : ItemBase
         isMoving2Cat = false;
         isReturning = false;
         isDashing = false;
-        gap = -Cat.instance.transform.position + transform.position;
+    }
+    public void CatJumpOut()
+    {
+        hasCat = false;
+        animator.SetBool("Walk", false);
     }
     private void MoveToHome()
     {
@@ -90,12 +149,16 @@ public class Dog : ItemBase
     {
         isReturning = false;
         isMoving2Cat = true;
+        timer = 0.0f;
         //todo 狗的走路动画
-        transform.position = Vector3.MoveTowards(transform.position, Cat.instance.transform.position, moveSpeed * Time.deltaTime);
+        transform.position += new Vector3((-transform.position+Cat.instance.transform.position).x,0, (-transform.position + Cat.instance.transform.position).z).normalized * moveSpeed * Time.deltaTime;
+        animator.SetBool("Walk", true);
+        animator.SetFloat("WalkDirection", (-transform.position + Cat.instance.transform.position).normalized.x);
         // 如果到达小猫位置，停止移动
         if (Vector3.Distance(transform.position, Cat.instance.transform.position) <= Cat.instance.dogLength * 3)
         {
             isMoving2Cat = false;
+            animator.SetBool("Walk", false);
             timer = 0.0f; // 重置计时器
         }
     }
@@ -104,8 +167,10 @@ public class Dog : ItemBase
     /// </summary>
     public void Bark()
     {
-
+        AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.DogBark);
+        EventHandler.AttentionEventHappen(attentionEvent);
     }
+    public float dashLength;
     /// <summary>
     /// 向喵喵叫时的位置直线跑动并冲出去2个狗长度的距离，随后在终点原地趴坐
     /// (若撞到墙或撞到不可移动的物体，如吧台、床头柜等，则撞完后使其上的物品晃动并掉下来，
@@ -115,29 +180,20 @@ public class Dog : ItemBase
     public void Dash()
     {
         // 向目标方向冲刺
-        transform.position += dashDirection * dashSpeed * Time.deltaTime;
-         Collider[] colliders = Physics.OverlapSphere(transform.position, 1.0f);
-         foreach (var collider in colliders)
-         {
-             if (collider.CompareTag("ObstacleCantMove"))
-             {
-                isDashing = false;
-                collider.gameObject.GetComponent<ItemBase>().DropThings();
-                SitDown();
-                break;
-             }
-            else if (collider.CompareTag("ObstacleCanMove"))
-            {
-                isDashing = false;
-                collider.gameObject.GetComponent<ItemBase>().Move(dashDirection);
-            }
-        }
+         Vector3 gap = dashDirection * dashSpeed * Time.deltaTime;
+         dashLength +=  gap.magnitude;
+         transform.position += gap;
+         isDashing = true;
+         animator.SetBool("Walk", true);
+         animator.SetFloat("WalkDirection", gap.normalized.x);
+         animator.SetFloat("Horiziontal", gap.normalized.x);
         // 检查是否冲刺完成
-        if (Vector3.Distance(transform.position, dashTarget) < 0.01f)
+        if (dashLength>dashTarget)
         {
             isDashing = false;
             SitDown();
-
+            Cat.instance.isMeowing = false;
+            Cat.instance.gameObject.GetComponent<Animator>().SetBool("Meow", false);
         }
     }
     public void SitDown()
@@ -146,31 +202,103 @@ public class Dog : ItemBase
         isMoving2Cat = false;
         isReturning = false;
         isDashing = false;
+        animator.SetBool("Walk", false);
     }
+    /// <summary>
+    /// 被猫咪抓挠之后，退后然后叫
+    /// </summary>
     public void DodgeCat()
     {
         isDodging = true;
-        transform.DOMove((transform.position - Cat.instance.transform.position).normalized * Cat.instance.dogLength, 1).OnComplete(() =>
+        Vector3 movement = new Vector3((transform.position - Cat.instance.transform.position).x,0, (transform.position - Cat.instance.transform.position).z);
+        transform.DOMove(transform.position+ movement.normalized * Cat.instance.dogLength, 1).OnComplete(() =>
         {
             //todo 面向猫
-
+            if((-transform.position + Cat.instance.transform.position).x > 0)
+            {
+                animator.SetFloat("WalkDirection", 1);
+            }
+            else
+            {
+                animator.SetFloat("WalkDirection", -1);
+            }
             Bark();
             isDodging = false;
         });
     }
-
+    /// <summary>
+    /// 狗被物品砸中
+    /// </summary>
+    /// <param name="itemTarget"></param>
+    public void Dodge(Vector3 itemTarget)
+    {
+        isDodging = true;
+        Vector3 movement = new Vector3((transform.position - itemTarget).x, 0, (transform.position - itemTarget).z);
+        transform.DOMove(transform.position + movement.normalized * Cat.instance.dogLength, 1).OnComplete(() =>
+        {
+            //todo 面向物品
+            if ((-transform.position + itemTarget).x > 0)
+            {
+                animator.SetFloat("WalkDirection", 1);
+            }
+            else
+            {
+                animator.SetFloat("WalkDirection", -1);
+            }
+            Bark();
+            isDodging = false;
+        });
+    }
     public void ResetTimer()
     {
         // 重置计时器
         timer = 0.0f;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("ObstacleCantMove"))
+        {
+            isDashing = false;
+            collision.gameObject.GetComponent<ItemBase>().DropThings();
+            SitDown();
+        }
+        else if (collision.gameObject.CompareTag("ObstacleCanMove"))
+        {
+            isDashing = false;
+            collision.gameObject.GetComponent<ItemBase>().Move(dashDirection);
+        }
     }
     private void OnCollisionExit(Collision collision)
     {
         if(collision.transform.tag == "Cat")
         {
             Cat.instance.isOnDog = false;
+            Debug.Log("leave");
             hasCat = false;
             SitDown();
         }
+    }
+    public GameObject left;
+    public GameObject right;
+    public bool IsInLivingRoom()
+    {
+        if(transform.position.x <= right.transform.position.x && transform.position.z >=
+            left.transform.position.z)
+        {
+            return true;
+        }
+        return false;
+    }
+    /// <summary>
+    /// 走到吊灯处然后看
+    /// </summary>
+    public void Move2Pendant()
+    {
+        seePendant = true;
+        transform.DOMove(new Vector3(0, 0, 0), 2).OnComplete(() => {
+            delay.transform.DOMove(new Vector3(0, 0, 0), 3).OnComplete(()=> {
+                seePendant = false;
+            });
+        });
     }
 }

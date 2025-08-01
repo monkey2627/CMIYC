@@ -8,7 +8,6 @@ public class AttentionEvent
 {
     public Transform EventPlaceTrans;
     public AttentionEventType EventType;
-
     public AttentionEvent(Transform eventPlaceTrans, AttentionEventType attentionEventType)
     {
         EventPlaceTrans = eventPlaceTrans;
