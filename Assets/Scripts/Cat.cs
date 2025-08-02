@@ -34,6 +34,7 @@ public class Cat : MonoBehaviour
         materialNumber = -1;
         rb = GetComponent<Rigidbody>();
         layerNow = 2;
+        transform.position = new Vector3(0, transform.position.y, 0);
         animator = GetComponent<Animator>();
         animator.SetBool("Back", false);
         rb.freezeRotation = true;
@@ -43,6 +44,128 @@ public class Cat : MonoBehaviour
     float moveHorizontal = 0.0f;
     bool move = false;
     public int herbSpritesNumber;
+    public bool isInCabinet;
+    public int cabinetLayer;
+    #region 射线检查
+    public static bool CheckForWall()
+    {
+        // 获取 Cat.instance.gameObject 的位置
+        Vector3 origin = Cat.instance.gameObject.transform.position;
+
+        // 定义射线的方向（向后方，即负 Z 轴）
+        Vector3 direction = new Vector3(0, 0, 1f);
+
+        // 射线的最大长度
+        float maxDistance = 6f;
+
+        // 存储碰撞信息
+        RaycastHit hit;
+        Debug
+.DrawRay(origin, direction * maxDistance, Color.red);
+
+        // 发射射线
+        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        {
+            // 检查碰撞到的物体是否名为 "wall"
+            if (hit.collider.gameObject.name == "wall")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool CheckForWallFront()
+    {
+        // 获取 Cat.instance.gameObject 的位置
+        Vector3 origin = Cat.instance.gameObject.transform.position;
+
+        // 定义射线的方向（向后方，即负 Z 轴）
+        Vector3 direction = new Vector3(0, 0, -1f);
+
+        // 射线的最大长度
+        float maxDistance = 6f;
+
+        // 存储碰撞信息
+        RaycastHit hit;
+        Debug
+.DrawRay(origin, direction * maxDistance, Color.red);
+
+        // 发射射线
+        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        {
+            // 检查碰撞到的物体是否名为 "wall"
+            if (hit.collider.gameObject.name == "wall")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public static bool CheckForGuizi()
+    {
+        // 获取 Cat.instance.gameObject 的位置
+        Vector3 origin = Cat.instance.gameObject.transform.position;
+
+        // 定义射线的方向（向后方，即负 Z 轴）
+        Vector3 direction = new Vector3(0,0,1f);
+
+        // 射线的最大长度
+        float maxDistance = 3f;
+
+        // 存储碰撞信息
+        RaycastHit hit;
+        // 可视化射线
+
+        // 发射射线
+        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        {
+            //Debug.Log(hit.collider.gameObject.name == "橱柜背板");
+            // 检查碰撞到的物体是否名为 "guizi"
+            if (hit.collider.gameObject.name == "橱柜背板")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public static bool CheckForExi()
+    {
+        // 获取 Cat.instance.gameObject 的位置
+        Vector3 origin = Cat.instance.gameObject.transform.position;
+
+        // 定义射线的方向（向后方，即负 Z 轴）
+        Vector3 direction = new Vector3(0, 0, 1f);
+
+        // 射线的最大长度
+        float maxDistance = 3f;
+
+        // 存储碰撞信息
+        RaycastHit hit;
+        // 可视化射线
+
+        // 发射射线
+        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        {
+           
+            if (hit.collider.gameObject.name == "展柜背板")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    #endregion
+    public bool isInExihibt;
+    public int exihibitLayer;
+    public GameObject delay;
+    public bool waitingTime;
+    public float jumpHigh;
+    int unMoveTime = 0;
     private void Update()
     {
         AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -50,17 +173,121 @@ public class Cat : MonoBehaviour
         tiaotiaoyaCount += Time.deltaTime;
         if (tiaotiaoyaCount < 20)
         {
-            maxJumpHeight = 9;
+            maxJumpHeight = jumpHigh * 1.5f;
         }
         else
         {
-            maxJumpHeight = 6;
+            maxJumpHeight = jumpHigh;
+            bubble.SetActive(false);
         }
         if (tiaotiaoyaCount > 40)
             tiaotiaoyaCount = 40;
         #endregion
-        #region jump
-        if (isOnPicture)
+
+        if (!waitingTime)
+        {
+            isInExihibt = CheckForExi();
+            isInCabinet = CheckForGuizi();
+        }
+        if (!isInCabinet && !isInExihibt)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+        }
+        #region 在展柜上
+        if (isInExihibt)
+        {
+            if (Cat.instance.transform.position.y >= 21.7 && Cat.instance.transform.position.y <= 26.8)
+            {
+                Cat.instance.transform.position = new Vector3(Cat.instance.transform.position.x,Exihibition.instance. vectors[0].y, Cat.instance.transform.position.z);
+                Cat.instance.exihibitLayer = 0;
+            }
+            else if (Cat.instance.transform.position.y > 26.8 && Cat.instance.transform.position.y <= 30.8)
+            {
+                Cat.instance.transform.position = new Vector3(Cat.instance.transform.position.x, Exihibition.instance.vectors[1].y, Cat.instance.transform.position.z);
+                Cat.instance.exihibitLayer = 1;
+            }
+
+            
+            if (Input.GetKeyDown(KeyCode.W))
+                {
+
+                    if (exihibitLayer < 1)
+                    {
+                        exihibitLayer++;
+                        transform.position = new Vector3(transform.position.x,Exihibition.instance.vectors[exihibitLayer].y, transform.position.z);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.S))
+                {
+                    if (exihibitLayer > 0)
+                    {
+                        exihibitLayer--;
+                        transform.position = new Vector3(transform.position.x,Exihibition.instance.vectors[exihibitLayer].y, transform.position.z);
+                    Debug.Log(exihibitLayer + Exihibition.instance.vectors[cabinetLayer].y);
+                    }
+                    else
+                    {
+                    rb.isKinematic = false;
+                    isInExihibt = false;
+                    rb.useGravity = true;
+                    waitingTime = true;
+                    delay.transform.DOMove(new Vector3(0, 0, 0), 1).OnComplete(()=> { waitingTime = false; });
+                    }
+                }
+            
+        }
+        #endregion
+        #region 在柜子上
+        else if (isInCabinet)
+        {
+            if (Cat.instance.transform.position.y >= 21 && Cat.instance.transform.position.y <= 25)
+            {
+                Cat.instance.transform.position = new Vector3(Cat.instance.transform.position.x, cabinet.instance.vectors[0].y, Cat.instance.transform.position.z);
+                Cat.instance.cabinetLayer = 0;
+            }
+            else if (Cat.instance.transform.position.y > 25 && Cat.instance.transform.position.y <= 29.5)
+            {
+                Cat.instance.transform.position = new Vector3(Cat.instance.transform.position.x, cabinet.instance.vectors[1].y, Cat.instance.transform.position.z);
+                Cat.instance.cabinetLayer = 1;
+            }
+            else if (Cat.instance.transform.position.y > 29.5)
+            {
+                Cat.instance.transform.position = new Vector3(Cat.instance.transform.position.x, cabinet.instance.vectors[2].y, Cat.instance.transform.position.z);
+                Cat.instance.cabinetLayer = 2;
+            }
+            {
+                if (Input.GetKeyDown(KeyCode.W)){
+
+                    if (cabinetLayer < 2)
+                    {
+                        cabinetLayer++;
+                        Debug.Log(cabinetLayer);
+                        Debug.Log(transform.position.z);
+                        transform.position = new Vector3(transform.position.x, cabinet.instance.vectors[cabinetLayer].y, transform.position.z);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.S))
+                {
+                    if (cabinetLayer > 0)
+                    {
+                        cabinetLayer--;
+                        transform.position = new Vector3(transform.position.x, cabinet.instance.vectors[cabinetLayer].y, transform.position.z);
+                    }
+                    else
+                    {
+                        rb.isKinematic = false;
+                        isInCabinet = false;
+                        rb.useGravity = true;
+                        waitingTime = true;
+                        delay.transform.DOMove(new Vector3(0, 0, 0), 1).OnComplete(() => { waitingTime = false; });
+                    }
+                }
+            }
+        }
+        #endregion
+        #region 在画上
+        else if (isOnPicture)
         {
             transform.position -= new Vector3(0, 1, 0) * Time.deltaTime;
             if (transform.position.y <= -36.44)
@@ -79,6 +306,8 @@ public class Cat : MonoBehaviour
                 Jump();
             }
         }
+        #endregion
+        #region jump
         else
         {
             bool IDEL = stateinfo.IsName("IDEL");
@@ -101,44 +330,82 @@ public class Cat : MonoBehaviour
             animator.SetBool("Walk", false);
             transform.position = new Vector3(gap.x + Dog.instance.transform.position.x, transform.position.y, gap.z + Dog.instance.transform.position.z);
         }
-        if (Input.GetKeyDown(KeyCode.W) && stateinfo.IsName("IDEL") ) // 按下 W 键
+        if (Input.GetKeyDown(KeyCode.W) && stateinfo.IsName("IDEL") && !isInCabinet && !isInExihibt) // 按下 W 键
         {
+            Debug.Log("yes");
+            if (CheckForWall())
+                return;
             if (layerNow > 0)
             {
                 layerNow--;
                 isChangingLayer = true;
-                
+                EndHide();
                 animator.SetBool("Walk", false);
                 if (isOnDog)
                 {
                     Dog.instance.layer[0] = (Layer)layerNow;
+                    Dog.instance.GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                    Dog.instance.GetComponent<SpriteRenderer>().sortingOrder = 6;
                     Dog.instance.transform.DOMove(new Vector3(Dog.instance.transform.position.x, Dog.instance.transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
-                     () => { isChangingLayer = false; });
+                     () => { isChangingLayer = false;
+                         Dog.instance.transform.GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                         Dog.instance.transform.GetComponent<SpriteRenderer>().sortingOrder = 7;
+                         GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                         GetComponent<SpriteRenderer>().sortingOrder = 7;
+                         herbSprites[0].GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                         herbSprites[0].GetComponent<SpriteRenderer>().sortingOrder = 7;
+                         sceneNow.ChangeLayer((Layer)(layerNow));
+                         ChangeLayer();
+                     });
                 }
                 else
                     transform.DOMove(new Vector3(transform.position.x, transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
                     () => { isChangingLayer = false; });
+                GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                GetComponent<SpriteRenderer>().sortingOrder = 7;
+                herbSprites[0].GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                herbSprites[0].GetComponent<SpriteRenderer>().sortingOrder = 7;
                 sceneNow.ChangeLayer((Layer)(layerNow));
+                ChangeLayer();
 
             }
         }
-        else if (Input.GetKeyDown(KeyCode.S) && stateinfo.IsName("IDEL")) // 按下 S 键
+        else if (Input.GetKeyDown(KeyCode.S) && stateinfo.IsName("IDEL") && !isInCabinet && !isInExihibt) // 按下 S 键
         {
+            if (CheckForWallFront())
+                return;
             if (layerNow < 2)
             {
                 layerNow++;
+                EndHide();
                 isChangingLayer = true;
                 animator.SetBool("Walk", false);
                 
                 if (isOnDog)
                 {
                     Dog.instance.layer[0] = (Layer)layerNow;
+                    Dog.instance.GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                    Dog.instance.GetComponent<SpriteRenderer>().sortingOrder = 6;
                     Dog.instance.transform.DOMove(new Vector3(Dog.instance.transform.position.x, Dog.instance.transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
-                   () => { isChangingLayer = false; });
+                   () => { isChangingLayer = false;
+                       Dog.instance.transform.GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                       Dog.instance.transform.GetComponent<SpriteRenderer>().sortingOrder = 7;
+                       GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                       GetComponent<SpriteRenderer>().sortingOrder = 7;
+                       herbSprites[0].GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                       herbSprites[0].GetComponent<SpriteRenderer>().sortingOrder = 7;
+                       sceneNow.ChangeLayer((Layer)(layerNow));
+                       ChangeLayer();
+                   });
                 }
                 else
                     transform.DOMove(new Vector3(transform.position.x, transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
                     () => { isChangingLayer = false; });
+                GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                GetComponent<SpriteRenderer>().sortingOrder = 7;
+                herbSprites[0].GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+                herbSprites[0].GetComponent<SpriteRenderer>().sortingOrder = 7;
+                ChangeLayer();
                 sceneNow.ChangeLayer((Layer)(layerNow));
             }
         }
@@ -162,7 +429,27 @@ public class Cat : MonoBehaviour
             else
             {
                 //Debug.Log(move);
-                animator.SetBool("Walk", move);
+                if (!isOnDog)
+                {
+                    if (!move)
+                    {
+                        unMoveTime++;
+                        if(unMoveTime > 5)
+                        {
+                            animator.SetBool("Walk", move);
+                        }
+                    }
+                    else
+                    {   animator.SetBool("Walk", move); 
+                        unMoveTime = 0;
+                    }
+                    
+                    
+                
+                
+                }
+                else
+                    animator.SetBool("Walk", false);
                 if (move)
                 {
                     Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0);
@@ -177,7 +464,7 @@ public class Cat : MonoBehaviour
         #endregion
         #region meow
         //静止且没有干其他事情的时候才可以喵喵叫
-        if (Input.GetKey(KeyCode.Q) && !isOnDog && !isJumping && !isScratching && stateinfo.IsName("IDEL"))
+        if (Input.GetKey(KeyCode.Q) && !isOnDog && !isJumping && !isScratching && stateinfo.IsName("IDEL") && !isInCabinet && !isInExihibt && !isOnPicture && !isHiding)
         {
             isMeowing = true;
             animator.SetBool("Meow", true);
@@ -201,8 +488,10 @@ public class Cat : MonoBehaviour
         if(item)
         {
             item.Show();
+            Debug.Log("附近有可以交互的物体"+item.name);
         }
-        if (Input.GetKey(KeyCode.E) && stateinfo.IsName("IDEL"))
+        
+        if (Input.GetKeyDown(KeyCode.E) && stateinfo.IsName("IDEL") && !isOnPicture)
         {
             if (item)
             {
@@ -214,13 +503,32 @@ public class Cat : MonoBehaviour
             }
         }
     }
+    public bool isPusing;
+    public void Push()
+    {
+        isPusing = true;
+        animator.SetBool("Push", true);
+    }
+    public void StopPush()
+    {
+        isPusing = false;
+        animator.SetBool("Push", false);
+    }
+    public GameObject bubble;
+    void ChangeLayer()
+    {
+        GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)layerNow).ToString();
+        GetComponent<SpriteRenderer>().sortingOrder = 7;
+        herbSprites[0].GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)layerNow).ToString();
+        bubble.GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)layerNow).ToString();
+        herbSprites[0].GetComponent<SpriteRenderer>().sortingOrder = 7;
+        bubble.GetComponent<SpriteRenderer>().sortingOrder = 7;
+
+    }
     public void GetMaterial(int herb)
     {
         materialNumber = herb;
-        if (moveHorizontal == 1)
-        { herbSprites[herb].SetActive(true); Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].GetComponent<SpriteRenderer>().DOFade(1, 0.3f); herbSpritesNumber = herb; }
-        else
-        { herbSprites[herb + 3].SetActive(true); Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].GetComponent<SpriteRenderer>().DOFade(1, 0.3f); herbSpritesNumber = herb + 3; }
+        herbSprites[herb].SetActive(true); Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].GetComponent<SpriteRenderer>().DOFade(1, 0.3f); herbSpritesNumber = herb; 
     }
     /// <summary>
     /// 猫咪挠东西
@@ -259,7 +567,26 @@ public class Cat : MonoBehaviour
     /// </summary>
     public void Hide()
     {
+        isHiding = true;
+        layerNow = 2;
+        isChangingLayer = true;
+        transform.DOMove(new Vector3(transform.position.x, transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
+                   () => { isChangingLayer = false; });
+        ChangeLayer();
         animator.SetBool("Hide", true);
+    }
+    public void EndHide()
+    {
+        if (isHiding)
+        {
+            isHiding = false;
+            layerNow = 1;
+            isChangingLayer = true;
+            transform.DOMove(new Vector3(transform.position.x, transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
+                       () => { isChangingLayer = false; });
+            ChangeLayer();
+            animator.SetBool("Hide", false);
+        }
     }
     /// <summary>
     /// 推不动，被硬控一小段时间
@@ -272,13 +599,6 @@ public class Cat : MonoBehaviour
     /// 被鱼缸里的鱼吸引，被硬控一小段时间
     /// </summary>
     public void PlayFishTank()
-    {
-
-    }
-    /// <summary>
-    /// 咬住跳跳芽
-    /// </summary>
-    public void FetchTiaoTiaoYa()
     {
 
     }
@@ -300,6 +620,7 @@ public class Cat : MonoBehaviour
     public void Meow()
     {
         staticTime = 0;
+        EndHide();
         sceneNow.EndObsearve();
         isMeowing = true;
         animator.SetBool("Meow", true);
@@ -344,6 +665,7 @@ public class Cat : MonoBehaviour
     public void Jump()
     {
         Debug.Log("jump");
+        EndHide();
         finishOnFloorAni = false;
         rb.useGravity = true;
         staticTime = 0;
@@ -365,7 +687,7 @@ public class Cat : MonoBehaviour
         jumpCount = 0;
         staticTime = 0;
         sceneNow.EndObsearve();
-        animator.SetBool("Hide", false);
+        EndHide();
         if(move.normalized.x!=0.0f)
             animator.SetFloat("WalkDirection", move.normalized.x);
         transform.position += move.normalized * speed * Time.deltaTime;
@@ -386,6 +708,7 @@ public class Cat : MonoBehaviour
             Debug.Log(collision.gameObject.name);
             Debug.Log(collision.gameObject.tag);
             Dog.instance.CatJumpOn();
+            rb.isKinematic = true;
             rb.velocity = Vector3.zero; // 将速度设置为0
             gap = transform.position - Dog.instance.transform.position;
             animator.SetBool("Jump", false);
@@ -399,6 +722,7 @@ public class Cat : MonoBehaviour
             Paint.instance.inTime = 0;
         }
     }
+  
     private bool finishOnFloorAni=true;
     /// <summary>
     /// 小猫跳跃落地动画结束时调用

@@ -10,7 +10,7 @@ public class Level : SceneBase
       
             foreach (var item in items)
             {
-            
+               if(item.GetComponent<SpriteRenderer>())
                 item.Move2Layer(layer);
             }
        

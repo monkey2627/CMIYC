@@ -8,6 +8,7 @@ public class Herb : ItemBase
     public override void inter()
     {
         base.inter();
+        Debug.Log("Get");
         Cat.instance.GetMaterial((int)type);
     }
     private void Update()

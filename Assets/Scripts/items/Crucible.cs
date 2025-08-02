@@ -7,8 +7,8 @@ using UnityEngine;
 public class Crucible : ItemBase
 {
     bool isSmoking = false;
-    Herb herb ;   // 坩埚内当前存在的药草
-    bool hasHerb = false;
+    HerbType herb ;   // 坩埚内当前存在的药草
+    public bool hasHerb = false;
     public override void inter()
     {
         base.inter();
@@ -19,12 +19,19 @@ public class Crucible : ItemBase
                 Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].GetComponent<SpriteRenderer>().DOFade(0, 0.3f);
                 Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].SetActive(false);
                 hasHerb = true;
-               // herb = (Herb) Cat.instance.materialNumber;
+                herb = (HerbType)Cat.instance.materialNumber;
+                Debug.Log("放入魔药");
                 Cat.instance.materialNumber = -1;
             }
-            else
+            else if(hasHerb)
             {
-
+                if(herb == HerbType.JumpBud)
+                {
+                    //todo 获得效果
+                    Debug.Log("喝下魔药");
+                    Cat.instance.bubble.SetActive(true);
+                    Cat.instance.tiaotiaoyaCount = 0;
+                }
             }
         }
     }

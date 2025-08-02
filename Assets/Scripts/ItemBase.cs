@@ -6,6 +6,7 @@ public enum InterType
 {
     Scratch,
     Open,
+    Push
 }
 public enum Layer
 {

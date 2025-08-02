@@ -7,6 +7,7 @@ public class GasStove : ItemBase
 {
     public GameObject fire;
     public GameObject flog;
+    public Crucible crucible;
     /// <summary>
     /// 关闭燃气灶，使坩埚停止冒烟
     /// </summary>
@@ -17,7 +18,9 @@ public class GasStove : ItemBase
         fire.GetComponent<SpriteRenderer>().DOFade(0, 0.2f).OnComplete(() =>
         {
             flog.GetComponent<SpriteRenderer>().DOFade(0, 0.3f);
+            crucible.enable = true;
         });
+
         enable = false;
     }
     public override void Show()

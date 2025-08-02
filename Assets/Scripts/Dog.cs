@@ -29,6 +29,7 @@ public class Dog : ItemBase
     void Start()
     {
         animator = GetComponent<Animator>();   
+        rb = GetComponent<Rigidbody>();
     }
 
     public override void inter()
@@ -39,6 +40,7 @@ public class Dog : ItemBase
     }
     public float speed = 5;
     // Update is called once per frame
+    public Vector3 lastPos;
     void Update()
     {
         if (hasCat && !Cat.instance.isJumping)
@@ -79,6 +81,8 @@ public class Dog : ItemBase
                     animator.SetFloat("Horiziontal", movement.x);
                     Cat.instance.gameObject.GetComponent<Animator>().SetFloat("WalkDirection", movement.normalized.x);
                     animator.SetFloat("WalkDirection", movement.normalized.x);
+                    lastPos = transform.position;
+                    if(!isWall)
                     transform.Translate(movement * speed * Time.deltaTime);
                 }
             }
@@ -159,6 +163,11 @@ public class Dog : ItemBase
     /// </summary>
     public void MoveToCat()
     {
+        layer[0] = ((Layer)Cat.instance.layerNow);
+        GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+        GetComponent<SpriteRenderer>().sortingOrder = 6;
+        int[] a = { 10, 5, 0 };
+        transform.DOMove(new Vector3(transform.position.x, transform.position.y, a[(int)layer[0]]), 0.1f);
         isReturning = false;
         isMoving2Cat = true;
         timer = 0.0f;
@@ -166,8 +175,9 @@ public class Dog : ItemBase
         transform.position += new Vector3((-transform.position+Cat.instance.transform.position).x,0, (-transform.position + Cat.instance.transform.position).z).normalized * moveSpeed * Time.deltaTime;
         animator.SetBool("Walk", true);
         animator.SetFloat("WalkDirection", (-transform.position + Cat.instance.transform.position).normalized.x);
+        Debug.Log(Mathf.Abs(Cat.instance.transform.position.x - Dog.instance.position.x));
         // 如果到达小猫位置，停止移动
-        if (Vector3.Distance(transform.position, Cat.instance.transform.position) <= Cat.instance.dogLength * 3)
+        if (Mathf.Abs(Cat.instance.transform.position.x - Dog.instance.position.x) <= Cat.instance.dogLength * 3)
         {
             isMoving2Cat = false;
             animator.SetBool("Walk", false);
@@ -175,7 +185,7 @@ public class Dog : ItemBase
         }
     }
     /// <summary>
-    /// 被猫抓挠/被掉落物击中后会往后躲避，并站定向猫/掉落物狂吠，并吸引主人前来查看
+    /// 被猫抓挠/被掉落物击中后会往后躲避，并站定向猫/掉落物狂吠，并吸引主人前来查看,只会被这一层的物体砸中
     /// </summary>
     public void Bark()
     {
@@ -279,15 +289,18 @@ public class Dog : ItemBase
             isDashing = false;
             collision.gameObject.GetComponent<ItemBase>().Move(dashDirection);
         }
+
     }
-    private void OnCollisionExit(Collision collision)
+    public bool isWall;
+    public void OnCollisionExit(Collision collision)
     {
-        if(collision.transform.tag == "Cat")
+        isWall = false;
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
         {
-            Cat.instance.isOnDog = false;
-            Debug.Log("leave");
-            hasCat = false;
-            SitDown();
+            rb.velocity = new Vector3(0, 0, 0);
         }
     }
     public GameObject left;

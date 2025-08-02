@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cup : MonoBehaviour
+public class Cup : ItemBase
 {
     private Rigidbody rb;
     public bool firstCollision = true;

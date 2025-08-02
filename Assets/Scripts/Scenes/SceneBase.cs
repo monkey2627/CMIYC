@@ -56,12 +56,13 @@ public class SceneBase : MonoBehaviour
             float distance = Vector3.Distance(Cat.instance.transform.position, item.transform.position);
 
             // 如果当前物品更近，则更新最近物品
-            if (distance < minDistance)
+            if (distance < minDistance && item.enable)
             {
                 minDistance = distance;
                 nearestItem = item;
             }
         }
+        //Debug.Log(minDistance + " " + nearestItem.gameObject.name);
         if(minDistance < targetDistance && nearestItem.enable)
         {
             return nearestItem;

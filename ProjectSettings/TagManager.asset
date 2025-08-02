@@ -9,6 +9,8 @@ TagManager:
   - ObstacleCantMove
   - ObstacleCanMove
   - Paint
+  - Wall
+  - Cat
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - Water
   - UI
   - Floor
-  - 
+  - Cat
   - 
   - 
   - 
@@ -45,4 +47,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: One
+    uniqueID: 3653698369
+    locked: 0
+  - name: Two
+    uniqueID: 590890455
+    locked: 0
+  - name: Three
+    uniqueID: 93573741
     locked: 0
