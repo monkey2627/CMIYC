@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum InterType
 {
-    
+    Scratch,
+    Open,
 }
 public class ItemBase : MonoBehaviour
 {
     private bool isMoving = false;
+    public InterType interType;
+    public bool enable = true;
     private Vector3 moveDirection;
     public 
     void Start()

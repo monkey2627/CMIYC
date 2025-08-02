@@ -45,11 +45,12 @@ public class SceneBase : MonoBehaviour
                 nearestItem = item;
             }
         }
-        if(minDistance < targetDistance)
+        if(minDistance < targetDistance && nearestItem.enable)
         {
             return nearestItem;
         }
-        else { return null; }
+        else 
+            return null; 
     }
     public void Obsearve()
     {

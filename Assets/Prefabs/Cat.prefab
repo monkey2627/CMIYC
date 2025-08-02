@@ -229,6 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneNow: {fileID: 0}
   speed: 4
+  staticTime: 0
   dogLength: 0
   groundLayer:
     serializedVersion: 2

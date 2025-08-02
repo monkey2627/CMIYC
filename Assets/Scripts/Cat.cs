@@ -26,6 +26,7 @@ public class Cat : MonoBehaviour
     }
     private void Start()
     {
+        animator.SetBool("Back", false);
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         rb.freezeRotation = true;
@@ -140,18 +141,46 @@ public class Cat : MonoBehaviour
             Obsearve();        
         }
 
-        #endregion        
+        #endregion      
+        sceneNow.EndObsearve();
         ItemBase item = sceneNow.Detect();
         if(item)
-        Debug.Log("周围有可互动的物体" + item.gameObject.name);
+        {
+            item.Show();
+        }
         if (Input.GetKey(KeyCode.E))
         {
             if (item)
             {
                 item.inter();
+                if(item.interType==InterType.Scratch && (Dog.instance.transform.position-transform.position).magnitude < dogLength)
+                {
+                    Dog.instance.Scratch(item);
+                }
             }
         }
     }
+
+    /// <summary>
+    /// 猫咪开门
+    /// </summary>
+    public void OpenDoor()
+    {
+        //1。猫咪背身
+        Back();
+        //2.门开的动画
+
+        //3.UI提示已经出去了
+    }
+
+    /// <summary>
+    /// 猫背身
+    /// </summary>
+    public void Back()
+    {
+        animator.SetBool("Back", true);
+    }
+
 
     /// <summary>
     /// 推不动，被硬控一小段时间

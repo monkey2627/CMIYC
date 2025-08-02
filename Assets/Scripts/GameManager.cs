@@ -27,13 +27,25 @@ public class GameManager : MonoBehaviour
     {
         Cat.instance.sceneNow = scenes[0];
     }
-    public void AddScene()
+    /// <summary>
+    /// 通关之后调用
+    /// </summary>
+    public void Win()
     {
-        sceneNow++;
-        if(sceneNow == scenes.Length)
+        //一系列处理
+
+        Destroy(scenes[0]);
+        // 从资源中加载场景
+        GameObject prefab = Resources.Load<GameObject>("Level");
+        // 检查Prefab是否加载成功
+        if (prefab != null)
         {
-            sceneNow = 0;
+            // 实例化Prefab到场景中
+            GameObject instantiatedObject = Instantiate(prefab);
+            Cat.instance.sceneNow = instantiatedObject.GetComponent<Level1>();
+            scenes[0] = instantiatedObject.GetComponent<Level1>();
         }
-        Cat.instance.sceneNow = scenes[sceneNow];
+        //重置小猫、小狗、主人的位置
+
     }
 }

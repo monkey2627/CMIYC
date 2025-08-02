@@ -105,12 +105,25 @@ public class Dog : ItemBase
         }
     }
     /// <summary>
-    /// 狗抓挠吸引主人
+    /// 狗抓挠吸item引主人
     /// </summary>
-    public void Scratch()
+    public void Scratch(ItemBase item)
     {
-        AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.DogDestruction);
-        EventHandler.AttentionEventHappen(attentionEvent);
+        //1.根据item的种类走到相应位置
+        animator.SetBool("Walk",true);
+        Vector3 movement = new Vector3(0, transform.position.y, 0);
+        animator.SetFloat("WalkDirection", movement.x);
+        transform.DOMove(transform.position + movement, 1).OnComplete(()=> {
+
+            //停止走路
+            animator.SetBool("walk", false);        
+            //吸引主人
+            AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.DogDestruction);
+            EventHandler.AttentionEventHappen(attentionEvent);
+
+        });
+
+
     }
     public Vector3 gap;
     /// <summary>
