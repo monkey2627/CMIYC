@@ -6,7 +6,7 @@ using UnityEngine;
 public class MasterAlertState : MasterState
 {
     private float _obsTimer;
-    
+    private bool hasTransit = false;
     public MasterAlertState(MasterController master, MasterStateMachine masterStateMachine) : base(master, masterStateMachine)
     {
         StateId = "Alert";
@@ -16,6 +16,7 @@ public class MasterAlertState : MasterState
     {
         base.EnterState();
         _obsTimer = 0;
+        hasTransit = false;
     }
 
     public override void ExitState()
@@ -34,7 +35,34 @@ public class MasterAlertState : MasterState
         }
         
         Transform targetTrans = master.AttentionEvent.EventPlaceTrans;
-        Vector3 targetPos = new Vector3(targetTrans.position.x, master.transform.position.y, targetTrans.position.z);
+        Vector3 targetPos = new Vector3(targetTrans.position.x, master.transform.position.y, master.transform.position.z);
+
+        if (master.hasNewEvent && master.HasTransit)
+        {
+            targetPos.x = master.TransitionX;
+            if (Mathf.Abs(master.transform.position.x - targetPos.x) < 0.05f)
+            {
+                master.hasNewEvent = false;
+                master.HasTransit = false;
+                master.transform.position = new Vector3(targetPos.x, master.transform.position.y, master.NormalZ);
+                targetPos.z = master.NormalZ;
+            }
+        }else if (master.AttentionEvent.TransitionPlaceX > -1e5f)
+        {
+            if (!hasTransit)
+            {
+                targetPos.x = master.AttentionEvent.TransitionPlaceX;
+                if (Mathf.Abs(master.transform.position.x - targetPos.x) < 0.05f)
+                {
+                    Debug.Log("拜访哈");
+                    hasTransit = true;
+                    master.HasTransit = true;
+                    master.TransitionX = targetPos.x;
+                    master.transform.position = new Vector3(targetPos.x, master.transform.position.y, targetTrans.position.z);
+                }
+            }
+            
+        }
         
         // 前往关注事件位置
         master.transform.position = Vector3.MoveTowards(

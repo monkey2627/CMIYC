@@ -39,6 +39,13 @@ public class MasterController : MonoBehaviour
     public List<AttentionEvent> AttentionEventList = new List<AttentionEvent>(3); // 未处理完的关注事件
     
     public Animator Animator;
+    
+    public float NormalZ = 0f;
+    public bool HasTransit = false;
+    public float TransitionX;
+    public bool hasNewEvent = false;
+
+    public AttentionEvent testEvet;
 
     #region StateMachine
 
@@ -73,6 +80,8 @@ public class MasterController : MonoBehaviour
         CatchState = new MasterCatchState(this, StateMachine);
         
         Animator = GetComponent<Animator>();
+        
+        NormalZ = this.transform.position.z;
     }
 
     // Start is called before the first frame update
@@ -87,6 +96,10 @@ public class MasterController : MonoBehaviour
     {
        StateMachine.CurState.UpdateState();
        CheckIfSeeCat();
+       if (Input.GetKeyDown(KeyCode.R))
+       {
+           EventHandler.AttentionEventHappen(testEvet); 
+       }
     }
 
     public void CheckIfSeeCat()
@@ -94,6 +107,12 @@ public class MasterController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             ifSeeCat = !ifSeeCat;
+        }
+
+        if (Cat.instance.isHiding)
+        {
+            ifSeeCat = false;
+            return;
         }
 
         if (Mathf.Sign(Cat.instance.transform.position.x - transform.position.x) == Mathf.Sign(FaceDirection))
@@ -134,6 +153,7 @@ public class MasterController : MonoBehaviour
         }*/
         
         AttentionEvent = attentionEvent;
+        hasNewEvent = true;
     }
     
     private void AnimationTriggerEvent(AnimationTriggerType triggerType)
