@@ -21,6 +21,8 @@ public class Cat : MonoBehaviour
     public bool isScratching = false;
     public int materialNumber = -1;//此时嘴里的材料序号，没有时为-1
     public float tiaotiaoyaCount = 0;
+    public bool isHiding;
+    public int[] layerPlace;
     private void Awake()
     {
         instance = this;
@@ -100,14 +102,14 @@ public class Cat : MonoBehaviour
             moveHorizontal = 1.0f; // 向右移动
         }
 
-        if (Input.GetKey(KeyCode.W)) // 按下 W 键
+        if (Input.GetKeyDown(KeyCode.W)) // 按下 W 键
         {
-            move = true;
+            // move = true;
             moveVertical = 1.0f; // 向前移动
         }
-        else if (Input.GetKey(KeyCode.S)) // 按下 S 键
+        else if (Input.GetKeyDown(KeyCode.S)) // 按下 S 键
         {
-            move = true;
+            // move = true;
             moveVertical = -1.0f; // 向后移动
         }
         if (isOnDog)//在狗狗上的时候猫不动，狗移动
@@ -138,6 +140,7 @@ public class Cat : MonoBehaviour
             }
         }
         #endregion
+        #region meow
         //静止且没有干其他事情的时候才可以喵喵叫
         if (Input.GetKey(KeyCode.Q) && !isOnDog && !isJumping && !isScratching && stateinfo.IsName("IDEL"))
         {
@@ -151,6 +154,7 @@ public class Cat : MonoBehaviour
             if (Dog.instance.isMoving2Cat)
                 Dog.instance.gameObject.GetComponent<Animator>().SetBool("Walk", false);
         }
+        #endregion
         staticTime += Time.deltaTime;
         if (staticTime > 5f)
         {
