@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class GasStove : ItemBase
 {
-    public GameManager ganguo;
-    public bool enable = true;
+    public GameObject crucible;
     public override void inter()
     {
         base.inter();

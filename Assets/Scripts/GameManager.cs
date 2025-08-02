@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public int level;
     public static GameManager instance;
     public SceneBase[] scenes;
     public int sceneNow;
@@ -42,8 +41,8 @@ public class GameManager : MonoBehaviour
         {
             // 实例化Prefab到场景中
             GameObject instantiatedObject = Instantiate(prefab);
-            Cat.instance.sceneNow = instantiatedObject.GetComponent<Level1>();
-            scenes[0] = instantiatedObject.GetComponent<Level1>();
+            Cat.instance.sceneNow = instantiatedObject.GetComponent<Level>();
+            scenes[0] = instantiatedObject.GetComponent<Level>();
         }
         //重置小猫、小狗、主人的位置
 

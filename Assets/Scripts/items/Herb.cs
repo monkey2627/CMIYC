@@ -10,4 +10,6 @@ public class Herb : ItemBase
 public enum HerbType
 {
     JumpBud,
+    Canterburybells,//·çÁå²İ
+    LightFeatherFlower//ÇáÓğ»¨
 }

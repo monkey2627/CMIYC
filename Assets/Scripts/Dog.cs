@@ -11,7 +11,7 @@ public class Dog : ItemBase
     public Rigidbody rb; // 狗的 Rigidbody 组件
     public GameObject delay;
     private float timer = 0.0f; // 计时器
-    private bool isMoving2Cat = false; // 是否正在移动
+    public bool isMoving2Cat = false; // 是否正在移动
     private bool isByCat = false;//是否已经走到小猫旁边并坐下
     public bool isReturning = false; // 是否正在返回窝中
     public bool isDashing = false; // 是否正在冲刺
@@ -20,7 +20,7 @@ public class Dog : ItemBase
     public float dashTarget; 
     public bool hasCat;
     public bool seePendant;//是否在看吊灯
-    Animator animator;
+    public Animator animator;
     private void Awake()
     {
         instance = this;
@@ -87,11 +87,10 @@ public class Dog : ItemBase
         }
         if (isMoving2Cat)
         {
-            // 等待计时
             timer += Time.deltaTime;
             if (timer >= waitTime)
             {
-                // 如果等待时间超过 5 秒，返回窝中
+                isMoving2Cat = false;
                 isReturning = true;
             }
         }
@@ -111,19 +110,17 @@ public class Dog : ItemBase
     {
         //1.根据item的种类走到相应位置
         animator.SetBool("Walk",true);
-        Vector3 movement = new Vector3(0, transform.position.y, 0);
+        Vector3 movement = new Vector3(item.position.x-transform.position.x, transform.position.y, item.position.z-transform.position.z);
         animator.SetFloat("WalkDirection", movement.x);
         transform.DOMove(transform.position + movement, 1).OnComplete(()=> {
-
             //停止走路
-            animator.SetBool("walk", false);        
+            animator.SetBool("walk", false);
+            //
+            item.ScratchByDog();
             //吸引主人
             AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.DogDestruction);
             EventHandler.AttentionEventHappen(attentionEvent);
-
         });
-
-
     }
     public Vector3 gap;
     /// <summary>
@@ -146,12 +143,14 @@ public class Dog : ItemBase
     private void MoveToHome()
     {
         //todo 动画
+        animator.SetBool("Walk",true);
         // 返回窝中
         transform.position = Vector3.MoveTowards(transform.position, home.position, moveSpeed * Time.deltaTime);
 
         // 如果到达窝的位置，停止返回
         if (Vector3.Distance(transform.position, home.position) < 0.01f)
         {
+            animator.SetBool("Walk", false);
             isReturning = false;
         }
     }
@@ -197,7 +196,6 @@ public class Dog : ItemBase
          dashLength +=  gap.magnitude;
          transform.position += gap;
          isDashing = true;
-         animator.SetBool("Walk", true);
          animator.SetFloat("WalkDirection", gap.normalized.x);
          animator.SetFloat("Horiziontal", gap.normalized.x);
         // 检查是否冲刺完成
@@ -216,6 +214,7 @@ public class Dog : ItemBase
         isReturning = false;
         isDashing = false;
         animator.SetBool("Walk", false);
+        animator.SetBool("Run", false);
     }
     /// <summary>
     /// 被猫咪抓挠之后，退后然后叫

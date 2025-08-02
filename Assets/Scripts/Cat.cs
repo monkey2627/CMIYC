@@ -5,12 +5,13 @@ using UnityEngine;
 public class Cat : MonoBehaviour
 {
     public static Cat instance;
+    public int Layer;//标志主角现在所在层级
     public SceneBase sceneNow;
     public float speed = 1f;
     public float staticTime;
     public float dogLength;
     Rigidbody rb;
-    Animator animator;
+    public Animator animator;
     public LayerMask groundLayer; // 地板图层
     public Transform groundCheck; // 地板检测点
     public float groundDistance = 0.4f; // 地板检测距离
@@ -26,17 +27,19 @@ public class Cat : MonoBehaviour
     }
     private void Start()
     {
-        animator.SetBool("Back", false);
+        
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        animator.SetBool("Back", false);
         rb.freezeRotation = true;
         dogLength = Dog.instance.gameObject.GetComponent<BoxCollider>().size.x;
     }
     private void Update()
     {
+        AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
         #region tiaotiaoya 效果
         tiaotiaoyaCount += Time.deltaTime;
-        if(tiaotiaoyaCount < 20)
+        if (tiaotiaoyaCount < 20)
         {
             maxJumpHeight = 9;
         }
@@ -48,38 +51,40 @@ public class Cat : MonoBehaviour
             tiaotiaoyaCount = 40;
         #endregion
         #region jump
-            if (isOnPicture)
+        if (isOnPicture)
+        {
+            transform.position -= new Vector3(0, 1, 0) * Time.deltaTime;
+            if (transform.position.y <= -36.44)
             {
-                transform.position -= new Vector3(0, 1, 0) * Time.deltaTime;
-                if(transform.position.y <= -36.44)
-                {
-                
-                        Debug.Log("levelPaint");
-                        isOnPicture = false;
-                        rb.useGravity = true;
-                        rb.isKinematic = false;
-                
-                }else
+                Debug.Log("levelPaint");
+                isOnPicture = false;
+                rb.useGravity = true;
+                rb.isKinematic = false;
+                animator.SetBool("Slide", false);
 
-                if (Input.GetKey(KeyCode.Space) && (!isMeowing && !isScratching)) //不允许二段跳，落地之后才能跳
-                {
-                    rb.isKinematic = false;
-                    isOnPicture = false;
-                    Jump();
-                }
-            }
-            else
+            } else if (Input.GetKey(KeyCode.Space) && (!isMeowing && !isScratching)) //不允许二段跳，落地之后才能跳
             {
-                isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundLayer);
-                if (Input.GetKey(KeyCode.Space) && (isGrounded || isOnDog) && 
-                (!isMeowing && !isScratching && !isJumping) && finishOnFloorAni) 
-                {
-                    Jump();
-                }
-               
+                animator.SetBool("Slide", false);
+                rb.isKinematic = false;
+                isOnPicture = false;
+                Jump();
             }
-            animator.SetFloat("UpDown", rb.velocity.normalized.y);
-            #endregion
+        }
+        else
+        {
+            bool IDEL = stateinfo.IsName("IDEL");
+            bool SLIDE = stateinfo.IsName("Slide");
+            bool Walk = stateinfo.IsName("Walk");
+            isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundLayer);
+            if (Input.GetKey(KeyCode.Space) && (isGrounded || isOnDog) &&
+            (!isMeowing && !isScratching && !isJumping) && (IDEL || SLIDE || Walk))
+            {
+                Jump();
+            }
+
+        }
+        animator.SetFloat("UpDown", rb.velocity.normalized.y);
+        #endregion
         #region move
         float moveHorizontal = 0.0f;
         float moveVertical = 0.0f;
@@ -110,45 +115,55 @@ public class Cat : MonoBehaviour
             animator.SetBool("Walk", false);
             transform.position = new Vector3(gap.x + Dog.instance.transform.position.x, transform.position.y, gap.z + Dog.instance.transform.position.z);
         }
-        else if(!isMeowing && !isScratching && !isOnPicture)
+        else if (!isMeowing && !isScratching && !isOnPicture)
         {
+            //如果正在落地动作，不允许动
 
-            animator.SetBool("Walk", move);
-            if (move)
+            if (stateinfo.IsName("OnFloor"))
             {
-                Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-                if(movement.x!=0.0f)
-                animator.SetFloat("Horiziontal", movement.x);
-                else
-                animator.SetFloat("WalkDirection", movement.x);
-                Move(movement);
+                animator.SetBool("Walk", false);
+            }
+            else
+            {
+                animator.SetBool("Walk", move);
+                if (move)
+                {
+                    Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+                    if (movement.x != 0.0f)
+                        animator.SetFloat("Horiziontal", movement.x);
+                    else
+                        animator.SetFloat("WalkDirection", movement.x);
+                    Move(movement);
+                }
             }
         }
-      
-        if (Input.GetKey(KeyCode.Q) && !isOnDog && !isJumping && !isScratching)
+        #endregion
+        //静止且没有干其他事情的时候才可以喵喵叫
+        if (Input.GetKey(KeyCode.Q) && !isOnDog && !isJumping && !isScratching && stateinfo.IsName("IDEL"))
         {
             isMeowing = true;
             animator.SetBool("Meow", true);
             Meow();
         }
-        if (Input.GetKeyUp(KeyCode.Q))
+        if (Input.GetKeyUp(KeyCode.Q))//停止按Q键代表猫咪不叫了，此时狗不走
         {
-           Dog.instance.gameObject.GetComponent<Animator>().SetBool("Walk", false);
+            isMeowing = false;
+            if (Dog.instance.isMoving2Cat)
+                Dog.instance.gameObject.GetComponent<Animator>().SetBool("Walk", false);
         }
         staticTime += Time.deltaTime;
-        if(staticTime > 5f)
+        if (staticTime > 5f)
         {
-            Obsearve();        
+            Obsearve();
         }
-
-        #endregion      
-        sceneNow.EndObsearve();
+        else  
+            sceneNow.EndObsearve(); 
         ItemBase item = sceneNow.Detect();
         if(item)
         {
             item.Show();
         }
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.E) && stateinfo.IsName("IDEL"))
         {
             if (item)
             {
@@ -159,6 +174,18 @@ public class Cat : MonoBehaviour
                 }
             }
         }
+    }
+    /// <summary>
+    /// 猫咪挠东西
+    /// </summary>
+    public void Scratch()
+    {
+        Cat.instance.animator.SetBool("Scratch", true);
+        isScratching = true;
+    }
+    public void EndScratch()
+    {
+        animator.SetBool("Scratch", false);
     }
 
     /// <summary>
@@ -180,8 +207,13 @@ public class Cat : MonoBehaviour
     {
         animator.SetBool("Back", true);
     }
-
-
+    /// <summary>
+    /// 猫咪藏起来
+    /// </summary>
+    public void Hide()
+    {
+        animator.SetBool("Hide", true);
+    }
     /// <summary>
     /// 推不动，被硬控一小段时间
     /// </summary>
@@ -222,8 +254,11 @@ public class Cat : MonoBehaviour
     {
         staticTime = 0;
         sceneNow.EndObsearve();
+        isMeowing = true;
+        animator.SetBool("Meow", true);
         if ((Dog.instance.transform.position - transform.position).magnitude > 3 * dogLength)
         {
+            if (Dog.instance.isDashing) return;
             Dog.instance.MoveToCat();
             Dog.instance.ResetTimer();
         }
@@ -236,11 +271,20 @@ public class Cat : MonoBehaviour
         {
             if (Dog.instance.isDashing) return;
             Dog.instance.dashDirection =new Vector3((transform.position - Dog.instance.transform.position).x,0,(transform.position - Dog.instance.transform.position).z).normalized;
-            Dog.instance.dashTarget = 2 * dogLength; 
+            Dog.instance.dashTarget = 2 * dogLength;
+            Dog.instance.GetComponent<Animator>().SetBool("Run", true);
             Dog.instance.isDashing = true;
             Dog.instance.dashLength = 0;
         }
 
+    }
+    /// <summary>
+    /// 播放完叫动画后调用
+    /// </summary>
+    public void FinishMeow()
+    {
+        if(!isMeowing)
+            animator.SetBool("Meow", false);
     }
 
     public float jumpForce = 5.0f; // 跳跃力
@@ -254,13 +298,13 @@ public class Cat : MonoBehaviour
     {
         Debug.Log("jump");
         finishOnFloorAni = false;
-        animator.SetBool("True", false);
         rb.useGravity = true;
         staticTime = 0;
         sceneNow.EndObsearve();
         isJumping = true;
         animator.SetBool("Jump", true);
         animator.SetBool("OnFloor", false);
+        animator.SetBool("EndJump", false);
         isOnDog = false;
         Dog.instance.CatJumpOut();
         // 实现跳跃效果
@@ -274,8 +318,9 @@ public class Cat : MonoBehaviour
         jumpCount = 0;
         staticTime = 0;
         sceneNow.EndObsearve();
+        animator.SetBool("Hide", false);
         if(move.normalized.x!=0.0f)
-        animator.SetFloat("WalkDirection", move.normalized.x);
+            animator.SetFloat("WalkDirection", move.normalized.x);
         transform.Translate(move * speed * Time.deltaTime);
     }
     Vector3 gap;
@@ -284,7 +329,6 @@ public class Cat : MonoBehaviour
     public bool isOnPicture = false; // 是否在画上
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.tag == "Paint");
         lastCollision = collision;
         if (collision.gameObject.tag == "Dog" && isJumping && !isMeowing)
         {
@@ -304,18 +348,13 @@ public class Cat : MonoBehaviour
         }
         if (collision.gameObject.tag == "Floor" && !isMeowing)
         {
-            animator.SetBool("Jump", false);
-            animator.SetBool("Walk", false);
             animator.SetBool("OnFloor", true);
             Paint.instance.inTime = 0;
         }
         if(collision.gameObject.tag == "Paint" && isJumping)
         {
-            Debug.Log(isOnPicture);
             if(isOnPicture==false && Paint.instance.inTime==0)
             {
-                Debug.Log("inter paint");
-
                 isOnPicture = true;
                 rb.useGravity = false;
                 Paint.instance.inTime++;
@@ -324,6 +363,7 @@ public class Cat : MonoBehaviour
                 animator.SetBool("Jump", false);
                 animator.SetBool("Walk", false);
                 animator.SetBool("ForceEnd", true);
+                animator.SetBool("Slide", true);
                 rb.velocity = new Vector3(0,-0.2f,0); // 重置垂直速度
                 
             }
@@ -336,13 +376,10 @@ public class Cat : MonoBehaviour
     /// </summary>
     public void OnFloor()
     {
-        finishOnFloorAni = true;
         isJumping = false;
         animator.SetBool("Jump", false);
-        animator.SetBool("OnFloor",true);
-        jumpCount = 0;
-        animator.SetBool("ForceEnd", false);
-        animator.SetBool("True", true);
+        animator.SetBool("Walk", false);
+        animator.SetBool("EndJump",true);
     }
     private void OnCollisionExit(Collision collision)
     {
@@ -352,12 +389,6 @@ public class Cat : MonoBehaviour
     {
        
     }
-    /// <summary>
-    /// 播放完叫动画后调用
-    /// </summary>
-    public void FinishMeow()
-    {
-        isMeowing = false;
-        animator.SetBool("Meow", false);
-    }
+   
+
 }

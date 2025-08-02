@@ -4,13 +4,30 @@ using UnityEngine;
 
 public class SceneBase : MonoBehaviour
 {
-    public ItemBase[] items;
+    public List<ItemBase> items;
     // Start is called before the first frame update
     void Start()
     {
-        
+        FindItems(transform);
     }
 
+    void FindItems(Transform parent)
+    {
+        // 遍历当前 Transform 下的所有子物体
+        foreach (Transform child in parent)
+        {
+            // 检查子物体是否带有 ItemBase 脚本
+            ItemBase itemBase = child.GetComponent<ItemBase>();
+            if (itemBase != null)
+            {
+                // 如果有，添加到 List 中
+                items.Add(itemBase);
+            }
+
+            // 递归查找子物体的子物体
+            FindItems(child);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -54,7 +71,6 @@ public class SceneBase : MonoBehaviour
     }
     public void Obsearve()
     {
-        Debug.Log("Obsearve");
         Cat.instance.staticTime = 0;
         foreach (var item in items)
         {
