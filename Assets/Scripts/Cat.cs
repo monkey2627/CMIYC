@@ -161,7 +161,7 @@ public class Cat : MonoBehaviour
             }
             else
             {
-                Debug.Log(move);
+                //Debug.Log(move);
                 animator.SetBool("Walk", move);
                 if (move)
                 {
