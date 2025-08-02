@@ -8,10 +8,19 @@ public class AttentionEvent
 {
     public Transform EventPlaceTrans;
     public AttentionEventType EventType;
+    public float TransitionPlaceX = -1e5f;
     public AttentionEvent(Transform eventPlaceTrans, AttentionEventType attentionEventType)
     {
         EventPlaceTrans = eventPlaceTrans;
         EventType = attentionEventType;
+        TransitionPlaceX = -1e5f;
+    }
+    
+    public AttentionEvent(Transform eventPlaceTrans, AttentionEventType attentionEventType, float transitionPlaceX)
+    {
+        EventPlaceTrans = eventPlaceTrans;
+        EventType = attentionEventType;
+        TransitionPlaceX = transitionPlaceX;
     }
 }
 

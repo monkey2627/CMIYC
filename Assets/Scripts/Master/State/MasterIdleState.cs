@@ -8,6 +8,7 @@ using Debug = UnityEngine.Debug;
 public class MasterIdleState : MasterState
 {
     private Vector3 IdlePosition = Vector3.zero;
+    private bool hasTransit = false;
     public MasterIdleState(MasterController master, MasterStateMachine masterStateMachine) : base(master, masterStateMachine)
     {
         StateId = "Idle";
@@ -19,6 +20,7 @@ public class MasterIdleState : MasterState
         
         if (IdlePosition == Vector3.zero)
             IdlePosition = master.transform.position;
+        hasTransit = false;
     }
 
     public override void ExitState()
@@ -36,11 +38,24 @@ public class MasterIdleState : MasterState
         }
         master.Animator.SetBool("IsIdle", false);
         //master.Animator.SetFloat("FaceDirection", IdlePosition.x > master.transform.position.x ? 1f:0f);
-        ChangeFaceDirection(IdlePosition);
+        Vector3 targetPos = IdlePosition;
+        
+        if (master.HasTransit)
+        {
+            targetPos.x = master.TransitionX;
+            targetPos.z = master.AttentionEvent.EventPlaceTrans.position.z;
+            if (Mathf.Abs(master.transform.position.x - targetPos.x) < 0.05f)
+            {
+                master.HasTransit = false;
+                master.transform.position = new Vector3(targetPos.x, master.transform.position.y, master.NormalZ);
+            }
+        }
+        
+        ChangeFaceDirection(targetPos);
         // 前往常态行为地点
         master.transform.position = Vector3.MoveTowards(
             master.transform.position, 
-            IdlePosition, 
+            targetPos, 
             master.MoveSpeed * Time.deltaTime
         );
 

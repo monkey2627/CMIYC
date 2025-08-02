@@ -39,7 +39,7 @@ public class MasterCatchState : MasterState
         // 去追猫
         master.transform.position = Vector3.MoveTowards(
             master.transform.position, 
-            new Vector3(targetTrans.position.x, master.transform.position.y, targetTrans.position.z), 
+            new Vector3(targetTrans.position.x, master.transform.position.y, master.transform.position.z), 
             master.MoveSpeed * Time.deltaTime * 2 // 以两倍速抓猫
         );
         master.Animator.SetBool("IsIdle", false);
