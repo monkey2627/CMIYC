@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,13 +7,25 @@ using UnityEngine;
 public class Crucible : ItemBase
 {
     bool isSmoking = false;
-    List<Herb> herbs = new List<Herb>(3);   // 坩埚内当前存在的药草
+    Herb herb ;   // 坩埚内当前存在的药草
+    bool hasHerb = false;
     public override void inter()
     {
         base.inter();
-        if (!isSmoking)
+        if (enable)
         {
-            // 判断是否叼着东西
+           if(Cat.instance.materialNumber != -1)
+            {
+                Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].GetComponent<SpriteRenderer>().DOFade(0, 0.3f);
+                Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].SetActive(false);
+                hasHerb = true;
+               // herb = (Herb) Cat.instance.materialNumber;
+                Cat.instance.materialNumber = -1;
+            }
+            else
+            {
+
+            }
         }
     }
 

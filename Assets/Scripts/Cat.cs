@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,12 @@ using UnityEngine;
 public class Cat : MonoBehaviour
 {
     public static Cat instance;
-    public int Layer;//标志主角现在所在层级
-    public SceneBase sceneNow;
+    public int layerNow;//标志主角现在所在层级
+    public Level sceneNow;
     public float speed = 1f;
     public float staticTime;
     public float dogLength;
-    Rigidbody rb;
+   public Rigidbody rb;
     public Animator animator;
     public LayerMask groundLayer; // 地板图层
     public Transform groundCheck; // 地板检测点
@@ -23,19 +24,25 @@ public class Cat : MonoBehaviour
     public float tiaotiaoyaCount = 0;
     public bool isHiding;
     public int[] layerPlace;
+    public GameObject[] herbSprites;
     private void Awake()
     {
         instance = this;
     }
     private void Start()
     {
-        
+        materialNumber = -1;
         rb = GetComponent<Rigidbody>();
+        layerNow = 2;
         animator = GetComponent<Animator>();
         animator.SetBool("Back", false);
         rb.freezeRotation = true;
         dogLength = Dog.instance.gameObject.GetComponent<BoxCollider>().size.x;
     }
+    bool isChangingLayer = false;
+    float moveHorizontal = 0.0f;
+    bool move = false;
+    public int herbSpritesNumber;
     private void Update()
     {
         AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -64,7 +71,7 @@ public class Cat : MonoBehaviour
                 rb.isKinematic = false;
                 animator.SetBool("Slide", false);
 
-            } else if (Input.GetKey(KeyCode.Space) && (!isMeowing && !isScratching)) //不允许二段跳，落地之后才能跳
+            } else if (Input.GetKeyDown(KeyCode.Space) && (!isMeowing && !isScratching)) //不允许二段跳，落地之后才能跳
             {
                 animator.SetBool("Slide", false);
                 rb.isKinematic = false;
@@ -78,7 +85,7 @@ public class Cat : MonoBehaviour
             bool SLIDE = stateinfo.IsName("Slide");
             bool Walk = stateinfo.IsName("Walk");
             isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundLayer);
-            if (Input.GetKey(KeyCode.Space) && (isGrounded || isOnDog) &&
+            if (Input.GetKeyDown(KeyCode.Space) && (isGrounded || isOnDog) &&
             (!isMeowing && !isScratching && !isJumping) && (IDEL || SLIDE || Walk))
             {
                 Jump();
@@ -88,49 +95,77 @@ public class Cat : MonoBehaviour
         animator.SetFloat("UpDown", rb.velocity.normalized.y);
         #endregion
         #region move
-        float moveHorizontal = 0.0f;
-        float moveVertical = 0.0f;
-        bool move = false;
-        if (Input.GetKey(KeyCode.A)) // 按下 A 键
-        {
-            move = true;
-            moveHorizontal = -1.0f; // 向左移动
-        }
-        else if (Input.GetKey(KeyCode.D)) // 按下 D 键
-        {
-            move = true;
-            moveHorizontal = 1.0f; // 向右移动
-        }
-
-        if (Input.GetKeyDown(KeyCode.W)) // 按下 W 键
-        {
-            // move = true;
-            moveVertical = 1.0f; // 向前移动
-        }
-        else if (Input.GetKeyDown(KeyCode.S)) // 按下 S 键
-        {
-            // move = true;
-            moveVertical = -1.0f; // 向后移动
-        }
+        move = false;            
         if (isOnDog)//在狗狗上的时候猫不动，狗移动
         {
             animator.SetBool("Walk", false);
             transform.position = new Vector3(gap.x + Dog.instance.transform.position.x, transform.position.y, gap.z + Dog.instance.transform.position.z);
         }
-        else if (!isMeowing && !isScratching && !isOnPicture)
+        if (Input.GetKeyDown(KeyCode.W) && stateinfo.IsName("IDEL") ) // 按下 W 键
         {
-            //如果正在落地动作，不允许动
+            if (layerNow > 0)
+            {
+                layerNow--;
+                isChangingLayer = true;
+                
+                animator.SetBool("Walk", false);
+                if (isOnDog)
+                {
+                    Dog.instance.layer[0] = (Layer)layerNow;
+                    Dog.instance.transform.DOMove(new Vector3(Dog.instance.transform.position.x, Dog.instance.transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
+                     () => { isChangingLayer = false; });
+                }
+                else
+                    transform.DOMove(new Vector3(transform.position.x, transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
+                    () => { isChangingLayer = false; });
+                sceneNow.ChangeLayer((Layer)(layerNow));
 
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.S) && stateinfo.IsName("IDEL")) // 按下 S 键
+        {
+            if (layerNow < 2)
+            {
+                layerNow++;
+                isChangingLayer = true;
+                animator.SetBool("Walk", false);
+                
+                if (isOnDog)
+                {
+                    Dog.instance.layer[0] = (Layer)layerNow;
+                    Dog.instance.transform.DOMove(new Vector3(Dog.instance.transform.position.x, Dog.instance.transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
+                   () => { isChangingLayer = false; });
+                }
+                else
+                    transform.DOMove(new Vector3(transform.position.x, transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
+                    () => { isChangingLayer = false; });
+                sceneNow.ChangeLayer((Layer)(layerNow));
+            }
+        }
+        else if(!isChangingLayer && !isMeowing && !isScratching && !isOnPicture)
+        {
+            if (Input.GetKey(KeyCode.A)) // 按下 A 键
+            {
+                        move = true;
+                        moveHorizontal = -1.0f; // 向左移动
+            }
+            else if (Input.GetKey(KeyCode.D)) // 按下 D 键
+            {
+                        move = true;
+                        moveHorizontal = 1.0f; // 向右移动
+            }        
+            //如果正在落地动作，不允许动
             if (stateinfo.IsName("OnFloor"))
             {
                 animator.SetBool("Walk", false);
             }
             else
             {
+                Debug.Log(move);
                 animator.SetBool("Walk", move);
                 if (move)
                 {
-                    Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+                    Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0);
                     if (movement.x != 0.0f)
                         animator.SetFloat("Horiziontal", movement.x);
                     else
@@ -178,6 +213,14 @@ public class Cat : MonoBehaviour
                 }
             }
         }
+    }
+    public void GetMaterial(int herb)
+    {
+        materialNumber = herb;
+        if (moveHorizontal == 1)
+        { herbSprites[herb].SetActive(true); Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].GetComponent<SpriteRenderer>().DOFade(1, 0.3f); herbSpritesNumber = herb; }
+        else
+        { herbSprites[herb + 3].SetActive(true); Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].GetComponent<SpriteRenderer>().DOFade(1, 0.3f); herbSpritesNumber = herb + 3; }
     }
     /// <summary>
     /// 猫咪挠东西
@@ -325,7 +368,7 @@ public class Cat : MonoBehaviour
         animator.SetBool("Hide", false);
         if(move.normalized.x!=0.0f)
             animator.SetFloat("WalkDirection", move.normalized.x);
-        transform.Translate(move * speed * Time.deltaTime);
+        transform.position += move.normalized * speed * Time.deltaTime;
     }
     Vector3 gap;
     Collision lastCollision;
@@ -355,24 +398,6 @@ public class Cat : MonoBehaviour
             animator.SetBool("OnFloor", true);
             Paint.instance.inTime = 0;
         }
-        if(collision.gameObject.tag == "Paint" && isJumping)
-        {
-            if(isOnPicture==false && Paint.instance.inTime==0)
-            {
-                isOnPicture = true;
-                rb.useGravity = false;
-                Paint.instance.inTime++;
-                isJumping = false;
-                rb.isKinematic = true;
-                animator.SetBool("Jump", false);
-                animator.SetBool("Walk", false);
-                animator.SetBool("ForceEnd", true);
-                animator.SetBool("Slide", true);
-                rb.velocity = new Vector3(0,-0.2f,0); // 重置垂直速度
-                
-            }
-        }
-
     }
     private bool finishOnFloorAni=true;
     /// <summary>

@@ -183,7 +183,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: efa833e0626029c44aa7063ba36b2f81, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f11c145e9f2e10a46ba252b177e6b075, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -227,10 +227,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434b4cb131c552d429542f4ca7258906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerNow: 0
   sceneNow: {fileID: 0}
   speed: 4
   staticTime: 0
   dogLength: 0
+  rb: {fileID: 0}
+  animator: {fileID: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -242,6 +245,10 @@ MonoBehaviour:
   isScratching: 0
   materialNumber: -1
   tiaotiaoyaCount: 0
+  isHiding: 0
+  layerPlace: 0900000004000000ffffffff
+  herbSprites: []
+  herbSpritesNumber: 0
   jumpForce: 90
   isJumping: 0
   jumpCount: 0
@@ -271,7 +278,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 2
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
 --- !u!65 &3289322296905478987
@@ -293,5 +300,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.8346925, y: 3.772808, z: 1}
-  m_Center: {x: -0.8, y: -0.38, z: 0}
+  m_Size: {x: 4.8346925, y: 3.772808, z: 1.4333429}
+  m_Center: {x: -0.79999995, y: -0.3800001, z: 0.21667147}

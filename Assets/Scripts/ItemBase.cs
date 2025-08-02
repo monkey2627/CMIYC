@@ -37,7 +37,7 @@ public class ItemBase : MonoBehaviour
                 isInThisLayer = true;
         }
         if(min > (int)l)
-            gameObject.GetComponent<SpriteRenderer>().DOFade(0f, 0.01f);
+            gameObject.GetComponent<SpriteRenderer>().DOFade(0.3f, 0.01f);
         else
             gameObject.GetComponent<SpriteRenderer>().DOFade(1f, 0.01f);
     }

@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     }
     public void StartNewGame()
     {
-        Cat.instance.sceneNow = scenes[0];
+       
     }
     /// <summary>
     /// 通关之后调用

@@ -141,6 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60c771349593cf4a85ee6bd6716eda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interType: 0
+  enable: 1
+  position: {x: 0, y: 0, z: 0}
+  layer: 02000000
+  isInThisLayer: 0
   moveSpeed: 5
   dashSpeed: 10
   dodgeDistance: 2
@@ -148,12 +153,14 @@ MonoBehaviour:
   home: {fileID: 0}
   rb: {fileID: 0}
   delay: {fileID: 0}
+  isMoving2Cat: 0
   isReturning: 0
   isDashing: 0
   dashDirection: {x: 0, y: 0, z: 0}
   dashTarget: 0
   hasCat: 0
   seePendant: 0
+  animator: {fileID: 0}
   speed: 5
   gap: {x: 0, y: 0, z: 0}
   dashLength: 0
