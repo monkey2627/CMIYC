@@ -24,4 +24,5 @@ public enum AttentionEventType
     DogDestruction,     // 狗搞破坏
     FogSpread,          // 灰雾扩散
     GuestArrive,        // 客人来访
+    CatchCatFail,       // 抓猫失败
 }

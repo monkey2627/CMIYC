@@ -25,6 +25,7 @@ public class MasterCatchState : MasterState
         base.UpdateState();
         if (master.ifSeeCat == false)
         {
+            EventHandler.AttentionEventHappen(new AttentionEvent(master.transform, AttentionEventType.CatchCatFail));
             master.StateMachine.ChangeState(master.AlertState);
             return;
         }
