@@ -43,8 +43,126 @@ public class Cat : MonoBehaviour
     float moveHorizontal = 0.0f;
     bool move = false;
     public int herbSpritesNumber;
+    public bool isInCabinet;
+    public int cabinetLayer;
+    public static bool CheckForWall()
+    {
+        // 获取 Cat.instance.gameObject 的位置
+        Vector3 origin = Cat.instance.gameObject.transform.position;
+
+        // 定义射线的方向（向后方，即负 Z 轴）
+        Vector3 direction = new Vector3(0, 0, 1f);
+
+        // 射线的最大长度
+        float maxDistance = 10f;
+
+        // 存储碰撞信息
+        RaycastHit hit;
+        Debug
+.DrawRay(origin, direction * maxDistance, Color.red);
+
+        // 发射射线
+        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        {
+            // 检查碰撞到的物体是否名为 "wall"
+            if (hit.collider.gameObject.name == "wall")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool CheckForWallFront()
+    {
+        // 获取 Cat.instance.gameObject 的位置
+        Vector3 origin = Cat.instance.gameObject.transform.position;
+
+        // 定义射线的方向（向后方，即负 Z 轴）
+        Vector3 direction = new Vector3(0, 0, -1f);
+
+        // 射线的最大长度
+        float maxDistance = 10f;
+
+        // 存储碰撞信息
+        RaycastHit hit;
+        Debug
+.DrawRay(origin, direction * maxDistance, Color.red);
+
+        // 发射射线
+        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        {
+            // 检查碰撞到的物体是否名为 "wall"
+            if (hit.collider.gameObject.name == "wall")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public static bool CheckForGuizi()
+    {
+        // 获取 Cat.instance.gameObject 的位置
+        Vector3 origin = Cat.instance.gameObject.transform.position;
+
+        // 定义射线的方向（向后方，即负 Z 轴）
+        Vector3 direction = new Vector3(0,0,1f);
+
+        // 射线的最大长度
+        float maxDistance = 10f;
+
+        // 存储碰撞信息
+        RaycastHit hit;
+        // 可视化射线
+
+        // 发射射线
+        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        {
+            //Debug.Log(hit.collider.gameObject.name == "橱柜背板");
+            // 检查碰撞到的物体是否名为 "guizi"
+            if (hit.collider.gameObject.name == "橱柜背板")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public static bool CheckForExi()
+    {
+        // 获取 Cat.instance.gameObject 的位置
+        Vector3 origin = Cat.instance.gameObject.transform.position;
+
+        // 定义射线的方向（向后方，即负 Z 轴）
+        Vector3 direction = new Vector3(0, 0, 1f);
+
+        // 射线的最大长度
+        float maxDistance = 10f;
+
+        // 存储碰撞信息
+        RaycastHit hit;
+        // 可视化射线
+
+        // 发射射线
+        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        {
+            Debug.Log(hit.collider.gameObject.name);
+            // 检查碰撞到的物体是否名为 "guizi"
+            if (hit.collider.gameObject.name == "展柜背板")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public bool isInExihibt;
+    public int exihibitLayer;
     private void Update()
     {
+        CheckForExi();
         AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
         #region tiaotiaoya 效果
         tiaotiaoyaCount += Time.deltaTime;
@@ -58,9 +176,74 @@ public class Cat : MonoBehaviour
         }
         if (tiaotiaoyaCount > 40)
             tiaotiaoyaCount = 40;
+        #endregion 
+        if (!isInCabinet && !isInExihibt)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+        }
+        #region 在展柜上
+        if (isInExihibt)
+        {
+            if (!CheckForExi())
+            {
+                isInExihibt= false;
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.W))
+                {
+
+                    if (exihibitLayer < 1)
+                    {
+                        exihibitLayer++;
+                        transform.position = new Vector3(transform.position.x,Exihibition.instance.vectors[exihibitLayer].y, transform.position.z);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.S))
+                {
+                    if (exihibitLayer > 0)
+                    {
+                        exihibitLayer--;
+                        transform.position = new Vector3(transform.position.x,Exihibition.instance.vectors[cabinetLayer].y, transform.position.z);
+                    }
+                }
+            }
+        }
         #endregion
-        #region jump
-        if (isOnPicture)
+        #region 在柜子上
+
+        else if (isInCabinet)
+        {
+            if (!CheckForGuizi())
+            {
+                isInCabinet = false;
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.W)){
+
+                    if (cabinetLayer < 2)
+                    {
+                        cabinetLayer++;
+                        Debug.Log(cabinetLayer);
+                        Debug.Log(transform.position.z);
+                        transform.position = new Vector3(transform.position.x, cabinet.instance.vectors[cabinetLayer].y, transform.position.z);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.S))
+                {
+                    if (cabinetLayer > 0)
+                    {
+                        cabinetLayer--;
+                        transform.position = new Vector3(transform.position.x, cabinet.instance.vectors[cabinetLayer].y, transform.position.z);
+                    }
+                }
+            }
+        }
+        #endregion
+        #region 在画上
+        else if (isOnPicture)
         {
             transform.position -= new Vector3(0, 1, 0) * Time.deltaTime;
             if (transform.position.y <= -36.44)
@@ -79,6 +262,8 @@ public class Cat : MonoBehaviour
                 Jump();
             }
         }
+        #endregion
+        #region jump
         else
         {
             bool IDEL = stateinfo.IsName("IDEL");
@@ -101,8 +286,11 @@ public class Cat : MonoBehaviour
             animator.SetBool("Walk", false);
             transform.position = new Vector3(gap.x + Dog.instance.transform.position.x, transform.position.y, gap.z + Dog.instance.transform.position.z);
         }
-        if (Input.GetKeyDown(KeyCode.W) && stateinfo.IsName("IDEL") ) // 按下 W 键
+        if (Input.GetKeyDown(KeyCode.W) && stateinfo.IsName("IDEL") && !isInCabinet && !isInExihibt) // 按下 W 键
         {
+            Debug.Log("yes");
+            if (CheckForWall())
+                return;
             if (layerNow > 0)
             {
                 layerNow--;
@@ -122,8 +310,10 @@ public class Cat : MonoBehaviour
 
             }
         }
-        else if (Input.GetKeyDown(KeyCode.S) && stateinfo.IsName("IDEL")) // 按下 S 键
+        else if (Input.GetKeyDown(KeyCode.S) && stateinfo.IsName("IDEL") && !isInCabinet && !isInExihibt) // 按下 S 键
         {
+            if (CheckForWallFront())
+                return;
             if (layerNow < 2)
             {
                 layerNow++;
@@ -177,7 +367,7 @@ public class Cat : MonoBehaviour
         #endregion
         #region meow
         //静止且没有干其他事情的时候才可以喵喵叫
-        if (Input.GetKey(KeyCode.Q) && !isOnDog && !isJumping && !isScratching && stateinfo.IsName("IDEL"))
+        if (Input.GetKey(KeyCode.Q) && !isOnDog && !isJumping && !isScratching && stateinfo.IsName("IDEL") && !isInCabinet)
         {
             isMeowing = true;
             animator.SetBool("Meow", true);
@@ -201,7 +391,9 @@ public class Cat : MonoBehaviour
         if(item)
         {
             item.Show();
+            Debug.Log("附近有可以交互的物体"+item.name);
         }
+        
         if (Input.GetKey(KeyCode.E) && stateinfo.IsName("IDEL"))
         {
             if (item)
@@ -272,13 +464,6 @@ public class Cat : MonoBehaviour
     /// 被鱼缸里的鱼吸引，被硬控一小段时间
     /// </summary>
     public void PlayFishTank()
-    {
-
-    }
-    /// <summary>
-    /// 咬住跳跳芽
-    /// </summary>
-    public void FetchTiaoTiaoYa()
     {
 
     }

@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class Statue : ItemBase
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public override void inter()
     {
-        
+        base.inter();
+        //ÏÔÊ¾ÎÄ±¾
     }
 }
