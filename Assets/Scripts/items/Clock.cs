@@ -8,9 +8,13 @@ public class Clock : ItemBase
     public override void inter()
     {
         base.inter();
+        if (interactCnt > 0)
+            return;
+        
         // 时间转换演出
         
         // 客人来访
         EventHandler.AttentionEventHappen(new AttentionEvent(Door, AttentionEventType.GuestArrive));
+        interactCnt++;
     }
 }

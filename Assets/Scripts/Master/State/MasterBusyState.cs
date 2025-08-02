@@ -56,6 +56,7 @@ public class MasterBusyState : MasterState
             case AttentionEventType.GuestArrive:
                 _busyTotalTime = 10f;
                 master.Animator.SetBool("IsBack", true);
+                DialogueManager.instance.StartDialogue();
                 break;
             case AttentionEventType.WildCatMeow:
                 _busyTotalTime = 10f;

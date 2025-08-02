@@ -15,7 +15,8 @@ public class TipPopManager : MonoBehaviour
     public float hideTime = 0.4f;
     
     public Transform tipPanel;
-    public Text tipText;
+    private Text tipText;
+    private Button closeBtn;
     
     private CanvasGroup tipCanvasGroup;
 
@@ -38,9 +39,12 @@ public class TipPopManager : MonoBehaviour
 
     private void Start()
     {
+        tipText = tipPanel.GetComponentInChildren<Text>();
+        closeBtn = tipPanel.GetComponentInChildren<Button>();
         tipCanvasGroup = tipPanel.GetComponent<CanvasGroup>();
         tipPanel.gameObject.SetActive(false);
         tipCanvasGroup.alpha = 0;
+        closeBtn.onClick.AddListener(CloseTip);
     }
 
     public void ShowTip(string tip)
@@ -58,8 +62,9 @@ public class TipPopManager : MonoBehaviour
             tipPanel.gameObject.SetActive(true);
             showTweener.Kill();
             fadeTweener.Kill();
-            showTweener = tipCanvasGroup.DOFade(1, showTime)
-                .OnComplete(() => StartCoroutine(HideTipAfterDelay(currentTip)));
+            /*showTweener = tipCanvasGroup.DOFade(1, showTime)
+                .OnComplete(() => StartCoroutine(HideTipAfterDelay(currentTip)));*/
+            showTweener = tipCanvasGroup.DOFade(1, showTime);
         }
         else
         {
@@ -80,9 +85,19 @@ public class TipPopManager : MonoBehaviour
         if (isShowing)
         {
             StopAllCoroutines();
-            tipCanvasGroup.DOFade(0, hideTime)
+            fadeTweener = tipCanvasGroup.DOFade(0, hideTime)
                 .OnComplete(() => tipPanel.gameObject.SetActive(false));
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+            TipPopManager.instance.ShowTip(
+                "You’ve always hated this painting. How dare your LOWLY SERVANT forget who the true master is—not even " +
+                "a single PORTRAIT of you in this house?! Time to teach her what real art looks like…… Meow~");
+        else if (Input.GetKeyDown(KeyCode.N))
+            ShowTip("ehqitttt2222222222222");
+    }
 }
+

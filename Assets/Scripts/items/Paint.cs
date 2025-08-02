@@ -25,8 +25,19 @@ public class Paint : ItemBase
     public override void inter()
     {
         base.inter();
-        TipPopManager.instance.ShowTip("Painting");
+        if (interactCnt >= 0)
+        {
+            TipPopManager.instance.ShowTip(
+                "You’ve always hated this painting. How dare your LOWLY SERVANT forget who the true master is—not even " +
+                "a single PORTRAIT of you in this house?! Time to teach her what real art looks like…… Meow~");
+        }
+        else
+        {
+            TipPopManager.instance.ShowTip("Now THIS is real art! Meow~");
+        }
+        interactCnt++;
     }
+    
     private void OnTriggerEnter(Collider other)
     {
        

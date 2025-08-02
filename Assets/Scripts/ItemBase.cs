@@ -11,7 +11,8 @@ public enum Layer
 {
     One,
     Two,
-    Three
+    Three,
+    Four,   // ä¸»äººæ‰€åœ¨å±‚ï¼Œå’Œå…¶ä»–äº’ä¸å¹²æ‰°
 }
 public class ItemBase : MonoBehaviour
 {
@@ -19,12 +20,13 @@ public class ItemBase : MonoBehaviour
     public InterType interType;
     public bool enable = true;
     /// <summary>
-    /// ÈÃ¹·¹·×ßµ½µÄÎ»ÖÃ
+    /// è®©ç‹—ç‹—èµ°åˆ°çš„ä½ç½®
     /// </summary>
     public Vector3 position;
     private Vector3 moveDirection;
     public Layer[] layer;
     public bool isInThisLayer = false;
+    public int interactCnt = 0;
     public void Move2Layer(Layer l)
     {
         isInThisLayer = false;
@@ -65,14 +67,14 @@ public class ItemBase : MonoBehaviour
         }
     }
     /// <summary>
-    /// ²»¿ÉÒÆ¶¯µÄÎïÌå±»×²»÷Ê±£¬ÆäÉÏÎïÌåµôÏÂ
+    /// ä¸å¯ç§»åŠ¨çš„ç‰©ä½“è¢«æ’å‡»æ—¶ï¼Œå…¶ä¸Šç‰©ä½“æ‰ä¸‹
     /// </summary>
     public virtual void DropThings()
     {
 
     }
     /// <summary>
-    /// Ã¨ßä¹Û²ìÊ±Õ¹Ê¾
+    /// çŒ«å’ªè§‚å¯Ÿæ—¶å±•ç¤º
     /// </summary>
     public virtual void Show()
     {

@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8158836900477021085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5756778732811562409}
+  - component: {fileID: 1895431896018008403}
+  - component: {fileID: 3813862748374679591}
+  m_Layer: 0
+  m_Name: UIManagers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5756778732811562409
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158836900477021085}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -27.646017, y: 19.589273, z: -6.5381227}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1895431896018008403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158836900477021085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1ec0e92c3cc6a448f555ce7222ccea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stayTime: 0.6
+  showTime: 0.4
+  hideTime: 0.4
+  tipPanel: {fileID: 0}
+  tipText: {fileID: 0}
+  closeBtn: {fileID: 0}
+--- !u!114 &3813862748374679591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158836900477021085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 464e9ce29f09f3a4092e1cd8ec9aa23a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BubbleACanvasGroup: {fileID: 0}
+  BubbleBCanvasGroup: {fileID: 0}
+  Duration: 30
+  ASentences:
+  - "Uh, hello... it's me again. Sorry to bother you, but the noise from your place
+    has been REALLY loud lately\u2014just now there was another huge crash. Are you...
+    renovating?"
+  - "But it\u2019s already nighttime... Hmm? What\u2019s that smell? Did something
+    burn?"
+  - "\u2026\u2026Right. Well, could you keep it down next time? I work night shifts
+    and only get to sleep in the afternoon. "
+  BSentences:
+  - "Ah! Yes, yes, renovations! I'm just... reorganizing my bookshelf. You know how
+    it is with old houses\u2014things tend to topple over when they get too cluttered.
+    Ha-ha. Maybe the cat knocked over a vase? I\u2019ll go scold it later."
+  - "NIGHTTIME\uFF01\uFF1FI\u2014uh, I\u2019m making soup! Thick soup! The ingredients
+    are... rare. Yeah, slow-cooking takes a while\u2014"
+  - Of course, of course! Here, have a homemade cookie as an apology? So sorry about
+    this! (whispering quickly) *Eatethisandforget eatethisandforget*......
