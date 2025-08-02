@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using DG.Tweening;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -28,23 +29,25 @@ public class MasterIdleState : MasterState
     public override void UpdateState()
     {
         base.UpdateState();
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Y))
         {
             master.StateMachine.ChangeState(master.AlertState);
             return;
         }
-        
-        
+        master.Animator.SetBool("IsIdle", false);
+        //master.Animator.SetFloat("FaceDirection", IdlePosition.x > master.transform.position.x ? 1f:0f);
+        ChangeFaceDirection(IdlePosition);
         // 前往常态行为地点
         master.transform.position = Vector3.MoveTowards(
             master.transform.position, 
             IdlePosition, 
             master.MoveSpeed * Time.deltaTime
         );
-        
+
         float distance = Vector3.Distance(master.transform.position, IdlePosition);
         if (distance < 0.05f) 
         {
+            master.Animator.SetBool("IsIdle", true);
             master.transform.position = IdlePosition;
             DoIdleAction();
         }

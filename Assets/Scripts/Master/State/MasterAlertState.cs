@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class MasterAlertState : MasterState
@@ -32,32 +33,37 @@ public class MasterAlertState : MasterState
             return;
         }
         
-        Vector3 targetPos = master.AttentionEvent.EventPlaceTrans.position;
+        Transform targetTrans = master.AttentionEvent.EventPlaceTrans;
+        Vector3 targetPos = new Vector3(targetTrans.position.x, master.transform.position.y, targetTrans.position.z);
         
         // 前往关注事件位置
         master.transform.position = Vector3.MoveTowards(
             master.transform.position, 
-            targetPos, 
+            targetPos,
             master.MoveSpeed * Time.deltaTime
         );
-        
+        master.Animator.SetBool("IsIdle", false);
+       // master.Animator.SetFloat("FaceDirection", targetPos.x > master.transform.position.x ? 1f:0f);
+        ChangeFaceDirection(targetPos);
         float distance = Vector3.Distance(master.transform.position, targetPos);
         if (distance < 0.05f)
         {
+            master.Animator.SetBool("IsIdle", true);
             master.transform.position = targetPos;
             master.IsObserving = true;
             if (_obsTimer > master.ObserveTime)   // Master has finish alert
             {
                 master.IsObserving = false;
                 _obsTimer = 0;
-                
+                master.SearchAroundSelf();
                 if (!master.HasDogAround)
                 {
-                    // 有东西要修理 / 有客人来访
+                    /*// 有东西要修理 / 有客人来访
                     if (master.ItemToFixList.Count > 0 || master.AttentionEvent.EventType == AttentionEventType.GuestArrive)
                         master.StateMachine.ChangeState(master.BusyState);
                     else
-                        master.StateMachine.ChangeState(master.IdleState);
+                        master.StateMachine.ChangeState(master.IdleState);*/
+                    master.StateMachine.ChangeState(master.BusyState);
                 }
                 else
                 {

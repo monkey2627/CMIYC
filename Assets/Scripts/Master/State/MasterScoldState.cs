@@ -26,9 +26,11 @@ public class MasterScoldState : MasterState
     {
         base.UpdateState();
 
+        master.Animator.SetBool("IsScold", true);
         if (_scoldTimer >= master.ScoldTime)
         {
             _scoldTimer = 0;
+            master.Animator.SetBool("IsScold", false);
             if (master.ItemToFixList.Count > 0)
             {
                 master.StateMachine.ChangeState(master.BusyState);

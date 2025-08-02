@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MasterCatchState : MasterState
 {
+    private bool isCatch = false;
     public MasterCatchState(MasterController master, MasterStateMachine masterStateMachine) : base(master, masterStateMachine)
     {
         StateId = "Catch";
@@ -27,16 +28,25 @@ public class MasterCatchState : MasterState
             master.StateMachine.ChangeState(master.AlertState);
             return;
         }
-        
+
+        if (isCatch)
+        {
+            return;
+        }
+
+        Transform targetTrans = Cat.instance.transform;
         // 去追猫
         master.transform.position = Vector3.MoveTowards(
             master.transform.position, 
-            master.Cat.position, 
+            new Vector3(targetTrans.position.x, master.transform.position.y, targetTrans.position.z), 
             master.MoveSpeed * Time.deltaTime * 2 // 以两倍速抓猫
         );
-        float distance = Vector3.Distance(master.transform.position, master.Cat.position);
-        if (distance < MasterController.DogLength)
+        master.Animator.SetBool("IsIdle", false);
+        float distance = Mathf.Abs(master.transform.position.x - targetTrans.position.x);
+        if (distance < master.DogLength)
         {
+            isCatch = true;
+            master.Animator.SetBool("IsIdle", true);
             // 抓到猫了，游戏失败！
             Debug.Log(" 抓到猫了，游戏失败！");
             EventHandler.CatchCat();

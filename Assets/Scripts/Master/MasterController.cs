@@ -13,9 +13,6 @@ public class MasterController : MonoBehaviour
     
     [Tooltip("每天初始的常态行为")]
     public IdleBehaviorEnum IdleBehavior;
-    
-    public Transform Cat;
-    public Transform Dog;
 
     [Tooltip("警戒行为逗留时间")]
     public float ObserveTime = 2f;
@@ -23,7 +20,9 @@ public class MasterController : MonoBehaviour
     [Tooltip("训斥行为持续时间")]
     public float ScoldTime = 3.0f;
 
-    public const float DogLength = 1f;
+    public float DogLength = 1f;
+    
+    public float FaceDirection = 1;
     
     public bool HasDogAround = false;
     
@@ -34,11 +33,12 @@ public class MasterController : MonoBehaviour
     public List<ItemBase> ItemToFixList = new List<ItemBase>(3);
     public List<ItemBase> BrokenItemList = new List<ItemBase>(3);
     
-    //public List<Transform> NoiseSourceList = new List<Transform>(3);
     [SerializeField]
     public AttentionEvent AttentionEvent;
+    [SerializeField]
+    public List<AttentionEvent> AttentionEventList = new List<AttentionEvent>(3); // 未处理完的关注事件
     
-    private Animator Animator;
+    public Animator Animator;
 
     #region StateMachine
 
@@ -72,16 +72,14 @@ public class MasterController : MonoBehaviour
         ScoldState = new MasterScoldState(this, StateMachine);
         CatchState = new MasterCatchState(this, StateMachine);
         
-        if (Cat == null)
-            Cat = FindObjectOfType<Cat>().transform;
-        if (Dog == null)
-            Dog = FindObjectOfType<Dog>().transform;
+        Animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         StateMachine.Initialize(IdleState);
+        DogLength = Dog.instance.gameObject.GetComponent<BoxCollider>().size.x;
     }
 
     // Update is called once per frame
@@ -91,16 +89,16 @@ public class MasterController : MonoBehaviour
        CheckIfSeeCat();
     }
 
-    private void AnimationTriggerEvent(AnimationTriggerType triggerType)
-    {
-        StateMachine.CurState.AnimationTriggerEvent(triggerType);
-    }
-
     public void CheckIfSeeCat()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
             ifSeeCat = !ifSeeCat;
+        }
+
+        if (Mathf.Sign(Cat.instance.transform.position.x - transform.position.x) == Mathf.Sign(FaceDirection))
+        {
+            //ifSeeCat = true;
         }
     }
     
@@ -110,7 +108,7 @@ public class MasterController : MonoBehaviour
     public void SearchAroundSelf()
     {
         // Check Items and Dog
-        float posDiff = Dog.position.x - this.transform.position.x;
+        float posDiff = Dog.instance.transform.position.x - this.transform.position.x;
         if (Math.Abs(posDiff) < 3 * DogLength)
             HasDogAround = true;
         else
@@ -131,13 +129,22 @@ public class MasterController : MonoBehaviour
         /*// 当前已经到达某个关注事件的位置，处理中
         if (StateMachine.CurState == AlertState && IsObserving == true)
         {
+            AttentionEventList.Add(attentionEvent);
             return;
         }*/
         
         AttentionEvent = attentionEvent;
     }
     
+    private void AnimationTriggerEvent(AnimationTriggerType triggerType)
+    {
+        StateMachine.CurState.AnimationTriggerEvent(triggerType);
+    }
 
+    public void OnFloor()
+    {
+        
+    }
 }
 
 public enum IdleBehaviorEnum

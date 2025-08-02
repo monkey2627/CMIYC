@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class MasterState
@@ -37,4 +38,10 @@ public class MasterState
     {
     }
 
+    public void ChangeFaceDirection(Vector3 targetPos)
+    {
+        master.FaceDirection = targetPos.x >= master.transform.position.x ? 1f : -1f;
+        master.transform.DOScaleX(master.FaceDirection, 0.1f);
+    }
+    
 }
