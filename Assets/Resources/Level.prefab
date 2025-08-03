@@ -294,6 +294,111 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &292506879577853834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6229064585433694188}
+  - component: {fileID: 3802369834531915514}
+  - component: {fileID: 4463831726742056387}
+  - component: {fileID: 619298573842366330}
+  m_Layer: 6
+  m_Name: Cube
+  m_TagString: Floor
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6229064585433694188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292506879577853834}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 27.3, y: -29.97, z: 5}
+  m_LocalScale: {x: 5.63, y: 1.1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2456256751256088425}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &3802369834531915514
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292506879577853834}
+  m_Mesh: {fileID: 0}
+--- !u!23 &4463831726742056387
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292506879577853834}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &619298573842366330
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292506879577853834}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &359077096934994788
 GameObject:
   m_ObjectHideFlags: 0
@@ -3236,8 +3341,6 @@ MonoBehaviour:
   layer: 00000000
   isInThisLayer: 0
   interactCnt: 0
-  openingDoor: {fileID: 21300000, guid: b70023aa34870d94dbf90277794ac081, type: 3}
-  handle: {fileID: 6621164042887023688}
 --- !u!1 &2570283714997789092
 GameObject:
   m_ObjectHideFlags: 0
@@ -7071,12 +7174,14 @@ Transform:
   - {fileID: 8909424788559086750}
   - {fileID: 2152972712208010101}
   - {fileID: 8903736298415485952}
+  - {fileID: 6229064585433694188}
   - {fileID: 2498067104316636428}
   - {fileID: 822761339903638775}
   - {fileID: 8467837034168054472}
   - {fileID: 5697401376388435050}
   - {fileID: 4310848933533074099}
   - {fileID: 1567644160423269884}
+  - {fileID: 4371432095658598759}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2141544999517754885
@@ -7738,7 +7843,7 @@ GameObject:
   - component: {fileID: 890218194366631183}
   - component: {fileID: 942175467570136403}
   - component: {fileID: 6133237571595695306}
-  - component: {fileID: 5311452109550159882}
+  - component: {fileID: 2821260025373518361}
   m_Layer: 0
   m_Name: "\u5FEB\u9012\u7BB1\uFF08\u5168\uFF09"
   m_TagString: Untagged
@@ -7857,7 +7962,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.67, y: 0.22970514, z: 0.19999999}
   m_Center: {x: 0.21000004, y: -1.13, z: 0}
---- !u!54 &5311452109550159882
+--- !u!54 &2821260025373518361
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
