@@ -33,7 +33,7 @@ public class SceneBase : MonoBehaviour
     {
         
     }
-    public float targetDistance = 3f;
+    public float targetDistance = 3.5f;
     /// <summary>
     /// 查找离猫最近的那个可交互物品
     /// </summary>
@@ -65,7 +65,7 @@ public class SceneBase : MonoBehaviour
         }
         if (nearestItem != null)
         {
-            Debug.Log(minDistance + " " + nearestItem.gameObject.name);
+            //Debug.Log(minDistance + " " + nearestItem.gameObject.name);
             if (minDistance < targetDistance && nearestItem.enable)
             {
                 return nearestItem;

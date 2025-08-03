@@ -752,9 +752,10 @@ public class Cat : MonoBehaviour
         {
             isOnDog = true;
             isJumping = false;
-            isGrounded = true;
-            rb.isKinematic = true;
+            isGrounded = true; 
             rb.velocity = Vector3.zero; // 将速度设置为0
+            rb.isKinematic = true;
+            Dog.instance.CatJumpOn();
             gap = transform.position - Dog.instance.transform.position;
             animator.SetBool("Jump", false);
             animator.SetBool("Walk", false);
