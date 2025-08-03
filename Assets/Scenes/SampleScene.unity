@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -377,6 +378,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7359586771011872270, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_Color.a
+      value: 0.6666667
+      objectReference: {fileID: 0}
     - target: {fileID: 8964475787809030118, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
       propertyPath: m_Name
       value: OperationHintPanel
@@ -446,15 +451,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7267599379502565903, guid: 256aceb423eef794cbcd8cbc2730284e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7267599379502565903, guid: 256aceb423eef794cbcd8cbc2730284e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7267599379502565903, guid: 256aceb423eef794cbcd8cbc2730284e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7267599379502565903, guid: 256aceb423eef794cbcd8cbc2730284e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -462,11 +467,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7267599379502565903, guid: 256aceb423eef794cbcd8cbc2730284e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.95
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 7267599379502565903, guid: 256aceb423eef794cbcd8cbc2730284e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.15565391
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7267599379502565903, guid: 256aceb423eef794cbcd8cbc2730284e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -599,6 +604,10 @@ PrefabInstance:
     - target: {fileID: 2133413179162896833, guid: ad69e8de3cae6754b9c240865d0ae0e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565156537201103670, guid: ad69e8de3cae6754b9c240865d0ae0e8, type: 3}
+      propertyPath: m_Color.a
+      value: 0.6666667
       objectReference: {fileID: 0}
     - target: {fileID: 8948992479243360859, guid: ad69e8de3cae6754b9c240865d0ae0e8, type: 3}
       propertyPath: m_Name
@@ -911,19 +920,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4154103730589436410, guid: 9367e4b86b3c29642baf723ce77b2e01, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 441
       objectReference: {fileID: 0}
     - target: {fileID: 7259402787977410781, guid: 9367e4b86b3c29642baf723ce77b2e01, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7259402787977410781, guid: 9367e4b86b3c29642baf723ce77b2e01, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7259402787977410781, guid: 9367e4b86b3c29642baf723ce77b2e01, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 870
+      value: 880
       objectReference: {fileID: 0}
     - target: {fileID: 7259402787977410781, guid: 9367e4b86b3c29642baf723ce77b2e01, type: 3}
       propertyPath: m_SizeDelta.y
@@ -931,11 +940,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7259402787977410781, guid: 9367e4b86b3c29642baf723ce77b2e01, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1085
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 7259402787977410781, guid: 9367e4b86b3c29642baf723ce77b2e01, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -200
+      value: 21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
