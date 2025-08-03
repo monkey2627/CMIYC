@@ -75,16 +75,17 @@ public class ItemBase : MonoBehaviour
     {
 
     }
+    public GameObject item;
     /// <summary>
     /// 猫咪观察时展示
     /// </summary>
     public virtual void Show()
     {
-
+        item.SetActive(true);
     }
     public virtual void Hide()
     {
-
+        item.SetActive(false);
     }
     public virtual void ScratchByDog()
     {

@@ -1405,26 +1405,6 @@ PrefabInstance:
       propertyPath: sceneNow
       value: 
       objectReference: {fileID: 587549011}
-    - target: {fileID: 1225586584876402724, guid: b6e102f3c001a1a4397330085d56a0f8, type: 3}
-      propertyPath: layerPlace.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1225586584876402724, guid: b6e102f3c001a1a4397330085d56a0f8, type: 3}
-      propertyPath: layerPlace.Array.data[0]
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1225586584876402724, guid: b6e102f3c001a1a4397330085d56a0f8, type: 3}
-      propertyPath: layerPlace.Array.data[1]
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1225586584876402724, guid: b6e102f3c001a1a4397330085d56a0f8, type: 3}
-      propertyPath: layerPlace.Array.data[2]
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1225586584876402724, guid: b6e102f3c001a1a4397330085d56a0f8, type: 3}
-      propertyPath: layerPlace.Array.data[3]
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5663171138255513279, guid: b6e102f3c001a1a4397330085d56a0f8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -47.8
