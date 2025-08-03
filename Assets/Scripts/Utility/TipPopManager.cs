@@ -55,6 +55,7 @@ public class TipPopManager : MonoBehaviour
 
     public void ShowTip(string tip)
     {
+        Cat.instance.enable = false;
         tipQueue.Enqueue(tip);
         ShowNextTip();
     }
@@ -63,6 +64,7 @@ public class TipPopManager : MonoBehaviour
     {
         if (tipQueue.TryDequeue(out string currentTip))
         {
+            Cat.instance.enable = false;
             isShowing = true;
             tipText.text = currentTip;
             tipPanel.gameObject.SetActive(true);
@@ -72,6 +74,7 @@ public class TipPopManager : MonoBehaviour
         }
         else
         {
+            Cat.instance.enable = true;
             isShowing = false;
         }
     }
@@ -88,6 +91,7 @@ public class TipPopManager : MonoBehaviour
     {
         if (isShowing)
         {
+            Cat.instance.enable = true;
             isShowing = false;
             StopAllCoroutines();
             fadeTweener = tipCanvasGroup.DOFade(0, hideTime)
@@ -100,10 +104,10 @@ public class TipPopManager : MonoBehaviour
     }
     private void Update()
     {
-        if (isShowing)
+        /*if (isShowing)
             Cat.instance.enable = false;
         else
-            Cat.instance.enable = true;
+            Cat.instance.enable = true;*/
         
         if (Input.GetKeyDown(KeyCode.M))
             TipPopManager.instance.ShowTip(

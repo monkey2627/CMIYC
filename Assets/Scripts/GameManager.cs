@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
 
     public void ShowCG()
     {
+        Cat.instance.enable = false;
         endPanel.SetActive(true);
         CanvasGroup canvasGroup = endPanel.GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0;
