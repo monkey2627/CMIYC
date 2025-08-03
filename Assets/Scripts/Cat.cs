@@ -141,9 +141,13 @@ public class Cat : MonoBehaviour
         // 定义射线的方向（向后方，即负 Z 轴）
         Vector3 direction = new Vector3(0, 0, 1f);
 
+
+
         // 射线的最大长度
         float maxDistance = 3f;
 
+        Debug
+.DrawRay(origin, direction * maxDistance, Color.red);
         // 存储碰撞信息
         RaycastHit hit;
         // 可视化射线
@@ -532,6 +536,12 @@ public class Cat : MonoBehaviour
         
 
     }
+    public GameObject luosiItem;
+    public void GetLuoSi()
+    {
+        luosiItem.SetActive(true);
+        TongfengKou.instance.enable = true;
+    }
     public void GetMaterial(int herb)
     {
         materialNumber = herb;
@@ -712,6 +722,7 @@ public class Cat : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         lastCollision = collision;
+        Debug.Log(collision.gameObject.name);
         if (collision.gameObject.tag == "Dog" && isJumping && !isMeowing)
         {
             isOnDog = true;

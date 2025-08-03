@@ -118,7 +118,7 @@ public class Dog : ItemBase
         animator.SetFloat("WalkDirection", movement.x);
         transform.DOMove(transform.position + movement, 1).OnComplete(()=> {
             //停止走路
-            animator.SetBool("walk", false);
+            animator.SetBool("Walk", false);
             //
             item.ScratchByDog();
             //吸引主人
