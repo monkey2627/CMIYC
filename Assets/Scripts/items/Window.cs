@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Window : ItemBase
 {
+    public SpriteRenderer viewRenderer;
+    public Sprite daskSprite;
     public override void inter()
     {
         base.inter();
@@ -17,5 +19,20 @@ public class Window : ItemBase
             TipPopManager.instance.ShowTip("Operation initiated. All paws proceed as planned. Meow~");
         }
         interactCnt++;
+    }
+
+    public void ClockUsed()
+    {
+        viewRenderer.sprite = daskSprite;
+    }
+    
+    private void OnEnable()
+    {
+        EventHandler.OnClockUsed += ClockUsed;
+    }
+    
+    private void OnDisable()
+    {
+        EventHandler.OnClockUsed -= ClockUsed;
     }
 }

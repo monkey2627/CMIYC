@@ -25,6 +25,7 @@ public class MasterBusyState : MasterState
         master.Animator.SetBool("IsUsingMagic", false);
         master.Animator.SetBool("IsBack", false);
         master.isOpeningDoor = false;
+        EventHandler.ChangeDoorState(false);
     }
 
     public override void UpdateState()
@@ -57,6 +58,7 @@ public class MasterBusyState : MasterState
             case AttentionEventType.GuestArrive:
                 _busyTotalTime = 10f;
                 master.Animator.SetBool("IsBack", true);
+                EventHandler.ChangeDoorState(true);
                 DialogueManager.instance.StartDialogue();
                 master.isOpeningDoor = true;
                 break;

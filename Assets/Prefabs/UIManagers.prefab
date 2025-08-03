@@ -49,8 +49,6 @@ MonoBehaviour:
   showTime: 0.4
   hideTime: 0.4
   tipPanel: {fileID: 0}
-  tipText: {fileID: 0}
-  closeBtn: {fileID: 0}
 --- !u!114 &3813862748374679591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,22 +61,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 464e9ce29f09f3a4092e1cd8ec9aa23a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DingDong: {fileID: 0}
+  DialogueCanvas: {fileID: 0}
   BubbleACanvasGroup: {fileID: 0}
   BubbleBCanvasGroup: {fileID: 0}
   Duration: 30
   ASentences:
-  - "Uh, hello... it's me again. Sorry to bother you, but the noise from your place
-    has been REALLY loud lately\u2014just now there was another huge crash. Are you...
-    renovating?"
-  - "But it\u2019s already nighttime... Hmm? What\u2019s that smell? Did something
-    burn?"
-  - "\u2026\u2026Right. Well, could you keep it down next time? I work night shifts
-    and only get to sleep in the afternoon. "
+  - "Uh, hello again... Your place is REALLY loud\u2014another crash just now. Renovating?"
+  - "But it\u2019s nighttime... Hmm\u2026 The smell, is something burning?"
+  - ...Right. Just keep it down? I sleep afternoons.
   BSentences:
-  - "Ah! Yes, yes, renovations! I'm just... reorganizing my bookshelf. You know how
-    it is with old houses\u2014things tend to topple over when they get too cluttered.
-    Ha-ha. Maybe the cat knocked over a vase? I\u2019ll go scold it later."
-  - "NIGHTTIME\uFF01\uFF1FI\u2014uh, I\u2019m making soup! Thick soup! The ingredients
-    are... rare. Yeah, slow-cooking takes a while\u2014"
-  - Of course, of course! Here, have a homemade cookie as an apology? So sorry about
-    this! (whispering quickly) *Eatethisandforget eatethisandforget*......
+  - Ah! Yes! Just... reorganizing. Old house, you know? Ha-ha. Probably the cat...
+  - "NIGHTTIME\uFF01\uFF1F Ahh, I mean\u2026soup! Special\u2014rare soup. Slow-cooked!"
+  - Of course, of course! Cookie? So sorry!! (mumbling) *Eatethisandforget*...
