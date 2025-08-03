@@ -15,7 +15,7 @@ public class Clock : ItemBase
         // 时间转换演出
         
         // 客人来访
-        EventHandler.AttentionEventHappen(new AttentionEvent(Door, AttentionEventType.GuestArrive));
+        EventHandler.AttentionEventHappen(new AttentionEvent(Door, AttentionEventType.GuestArrive, -57));
         DialogueManager.instance.DoorDingDong();
         interactCnt++;
     }
