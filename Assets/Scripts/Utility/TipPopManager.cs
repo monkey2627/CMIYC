@@ -15,7 +15,7 @@ public class TipPopManager : MonoBehaviour
     public float hideTime = 0.4f;
     
     public Transform tipPanel;
-    private Text tipText;
+    public Text tipText;
     private Button closeBtn;
     
     private CanvasGroup tipCanvasGroup;
@@ -26,6 +26,10 @@ public class TipPopManager : MonoBehaviour
     private Tweener showTweener;
     private Tweener fadeTweener;
 
+    // 定义委托和事件
+    public delegate void TipClosedEventHandler();
+    public event TipClosedEventHandler OnTipClosed;
+
     private void Awake()
     {
         if (instance == null)
@@ -35,16 +39,18 @@ public class TipPopManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
-    }
-
-    private void Start()
-    {
-        tipText = tipPanel.GetComponentInChildren<Text>();
+        
+        //tipText = tipPanel.GetComponentInChildren<Text>();
         closeBtn = tipPanel.GetComponentInChildren<Button>();
         tipCanvasGroup = tipPanel.GetComponent<CanvasGroup>();
         tipPanel.gameObject.SetActive(false);
         tipCanvasGroup.alpha = 0;
         closeBtn.onClick.AddListener(CloseTip);
+
+    }
+
+    private void Start()
+    {
     }
 
     public void ShowTip(string tip)
@@ -62,8 +68,6 @@ public class TipPopManager : MonoBehaviour
             tipPanel.gameObject.SetActive(true);
             showTweener.Kill();
             fadeTweener.Kill();
-            /*showTweener = tipCanvasGroup.DOFade(1, showTime)
-                .OnComplete(() => StartCoroutine(HideTipAfterDelay(currentTip)));*/
             showTweener = tipCanvasGroup.DOFade(1, showTime);
         }
         else
@@ -86,10 +90,13 @@ public class TipPopManager : MonoBehaviour
         {
             StopAllCoroutines();
             fadeTweener = tipCanvasGroup.DOFade(0, hideTime)
-                .OnComplete(() => tipPanel.gameObject.SetActive(false));
+                .OnComplete(() => 
+                {
+                    tipPanel.gameObject.SetActive(false);
+                    OnTipClosed?.Invoke(); // 触发事件
+                });
         }
     }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))

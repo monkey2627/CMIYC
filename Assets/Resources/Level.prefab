@@ -4285,9 +4285,9 @@ MonoBehaviour:
   layer: 00000000
   isInThisLayer: 0
   interactCnt: 0
-  closedDoor: {fileID: 0}
-  openingDoor: {fileID: 0}
-  handle: {fileID: 0}
+  closedDoor: {fileID: 21300000, guid: 200014125a318a3439592cc39ed48261, type: 3}
+  openingDoor: {fileID: 21300000, guid: b70023aa34870d94dbf90277794ac081, type: 3}
+  handle: {fileID: 6621164042887023688}
 --- !u!1 &2570283714997789092
 GameObject:
   m_ObjectHideFlags: 0
