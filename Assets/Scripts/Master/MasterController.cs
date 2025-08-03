@@ -8,6 +8,8 @@ using UnityEngine.Serialization;
 
 public class MasterController : MonoBehaviour
 {
+    public static MasterController instance;
+    
     [Tooltip("主人移动速度")]
     public float MoveSpeed;
     
@@ -29,6 +31,8 @@ public class MasterController : MonoBehaviour
     public bool IsObserving = false;
     
     public bool ifSeeCat = false;
+    
+    public bool isOpeningDoor = false;
     
     public List<ItemBase> ItemToFixList = new List<ItemBase>(3);
     public List<ItemBase> BrokenItemList = new List<ItemBase>(3);
@@ -71,6 +75,8 @@ public class MasterController : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+        
         StateMachine = new MasterStateMachine();
         
         IdleState = new MasterIdleState(this, StateMachine);
