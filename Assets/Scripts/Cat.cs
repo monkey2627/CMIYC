@@ -25,6 +25,7 @@ public class Cat : MonoBehaviour
     public float tiaotiaoyaCount = 0;
     public bool isHiding;
     public int[] layerPlace;
+    public bool enable = true;
     public GameObject[] herbSprites;
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class Cat : MonoBehaviour
         materialNumber = -1;
         rb = GetComponent<Rigidbody>();
         layerNow = 2;
+        ChangeLayer();
         transform.position = new Vector3(0, transform.position.y, 0);
         animator = GetComponent<Animator>();
         animator.SetBool("Back", false);
