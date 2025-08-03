@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,12 +21,18 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetMouseButtonDown(0) && isEnding)
+        {
+            StartNewGame();
+        }
     }
     public void StartNewGame()
     {
        
     }
+    public GameObject Ending;
+    public GameObject delay;
+    public bool isEnding = false;
     /// <summary>
     /// 通关之后调用
     /// </summary>
@@ -34,8 +41,14 @@ public class GameManager : MonoBehaviour
         //一系列处理
 
         Destroy(scenes[0]);
+        Destroy(Cat.instance.gameObject);
+        Destroy(Dog.instance.gameObject);
+        Destroy(MasterController.instance.gameObject);
+        Ending.SetActive(true);
+        delay.transform.DOMove(new Vector3(0, 0, 0),3).OnComplete(()=> { isEnding = true; });
         // 从资源中加载场景
         GameObject prefab = Resources.Load<GameObject>("Level");
+
         // 检查Prefab是否加载成功
         if (prefab != null)
         {

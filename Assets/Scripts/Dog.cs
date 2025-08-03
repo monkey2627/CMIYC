@@ -43,6 +43,7 @@ public class Dog : ItemBase
     public Vector3 lastPos;
     void Update()
     {
+        Debug.Log(rb.velocity);
         if (hasCat && !Cat.instance.isJumping)
         {
             #region move

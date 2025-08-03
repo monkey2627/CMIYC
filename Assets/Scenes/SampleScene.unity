@@ -1028,7 +1028,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1909475542}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -2326,6 +2326,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2034067438}
     - target: {fileID: 1225586584876402724, guid: b6e102f3c001a1a4397330085d56a0f8, type: 3}
+      propertyPath: jumpHigh
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1225586584876402724, guid: b6e102f3c001a1a4397330085d56a0f8, type: 3}
       propertyPath: sceneNow
       value: 
       objectReference: {fileID: 587549011}
@@ -2502,7 +2506,6 @@ SceneRoots:
   - {fileID: 963194228}
   - {fileID: 548321658}
   - {fileID: 7059725798323451157}
-  - {fileID: 196083506}
   - {fileID: 7414935659709194203}
   - {fileID: 6796121882718740452}
   - {fileID: 4835234277863694045}
