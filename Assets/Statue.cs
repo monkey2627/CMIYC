@@ -35,5 +35,12 @@ public class Statue : ItemBase
         });
 
     }
+    
+    public override void PlayRecoverAnimation()
+    {
+        Animator animator = crash.GetComponent<Animator>();
+        if (animator != null)
+            animator.Play("ItemRecover");
+    }
  
 }
