@@ -46,6 +46,7 @@ public class MasterAlertState : MasterState
                 master.HasTransit = false;
                 master.transform.position = new Vector3(targetPos.x, master.transform.position.y, master.NormalZ);
                 targetPos.z = master.NormalZ;
+                master.SetSortingLayer("Four");
             }
         }else if (master.AttentionEvent.TransitionPlaceX > -1e5f)
         {
@@ -54,11 +55,11 @@ public class MasterAlertState : MasterState
                 targetPos.x = master.AttentionEvent.TransitionPlaceX;
                 if (Mathf.Abs(master.transform.position.x - targetPos.x) < 0.05f)
                 {
-                    Debug.Log("拜访哈");
                     hasTransit = true;
                     master.HasTransit = true;
                     master.TransitionX = targetPos.x;
                     master.transform.position = new Vector3(targetPos.x, master.transform.position.y, targetTrans.position.z);
+                    master.SetSortingLayer("One");
                 }
             }
             

@@ -167,9 +167,9 @@ public class MasterController : MonoBehaviour
         StateMachine.CurState.AnimationTriggerEvent(triggerType);
     }
 
-    public void OnFloor()
+    public void SetSortingLayer(string layerName)
     {
-        
+        this.GetComponent<SpriteRenderer>().sortingLayerName = layerName;
     }
 }
 

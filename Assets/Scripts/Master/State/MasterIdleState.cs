@@ -26,6 +26,7 @@ public class MasterIdleState : MasterState
     public override void ExitState()
     {
         base.ExitState();
+        master.Animator.SetBool("IsPlay", false);
     }
 
     public override void UpdateState()
@@ -37,6 +38,7 @@ public class MasterIdleState : MasterState
             return;
         }
         master.Animator.SetBool("IsIdle", false);
+        master.Animator.SetBool("IsPlay", false);
         //master.Animator.SetFloat("FaceDirection", IdlePosition.x > master.transform.position.x ? 1f:0f);
         Vector3 targetPos = IdlePosition;
         
@@ -48,6 +50,7 @@ public class MasterIdleState : MasterState
             {
                 master.HasTransit = false;
                 master.transform.position = new Vector3(targetPos.x, master.transform.position.y, master.NormalZ);
+                master.SetSortingLayer("Four");
             }
         }
         
@@ -63,6 +66,7 @@ public class MasterIdleState : MasterState
         if (distance < 0.05f) 
         {
             master.Animator.SetBool("IsIdle", true);
+            master.Animator.SetBool("IsPlay", true);
             master.transform.position = IdlePosition;
             DoIdleAction();
         }
