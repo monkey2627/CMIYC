@@ -40,7 +40,7 @@ public class MasterState
 
     public void ChangeFaceDirection(Vector3 targetPos)
     {
-        master.FaceDirection = targetPos.x >= master.transform.position.x ? 1f : -1f;
+        master.FaceDirection = targetPos.x >= master.transform.position.x ? 2f : -2f;
         master.transform.DOScaleX(master.FaceDirection, 0.1f);
     }
     
