@@ -10,7 +10,7 @@ public class Statue : ItemBase
     public GameObject delay;
     
     /// <summary>
-    /// Ã¨°ÑÕ¹Æ·ÍÆÏÂÈ¥
+    /// çŒ«æŠŠå±•å“æ¨ä¸‹å»
     /// </summary>
     public override void inter()
     {
@@ -28,7 +28,7 @@ public class Statue : ItemBase
 
             });
             gameObject.SetActive(false);
-            //ÎüÒıÖ÷ÈË
+            //å¸å¼•ä¸»äºº
             AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.ItemBroken);
             EventHandler.AttentionEventHappen(attentionEvent);
 

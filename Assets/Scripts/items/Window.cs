@@ -20,30 +20,28 @@ public class Window : ItemBase
         //吸引主人
         AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.WildCatMeow);
         EventHandler.AttentionEventHappen(attentionEvent);
-        if (interactCnt >= 0)
-        {
-            TipPopManager.instance.ShowTip("Target group spotted in the eastern bushes—potential escape accomplices. If only they understand Meow-rse code... " +
-                                           "Just go tap that DOORBELL! Hmm... You'll pay them with your secretly stashed tuna treats afterward.");
-        }
-        else
-        {
-            TipPopManager.instance.ShowTip("Operation initiated. All paws proceed as planned. Meow~");
-        }
-        interactCnt++;
+        TipPopManager.instance.ShowTip("I PAY the rent with my CUTENESS and THIS is my view? Look at them, leaping through the grass without a care... LET ME OUT!!");
     }
 
     public void ClockUsed()
     {
         viewRenderer.sprite = daskSprite;
     }
+
+    public void LeaveWindow()
+    {
+        enable = true;
+    }
     
     private void OnEnable()
     {
         EventHandler.OnClockUsed += ClockUsed;
+        EventHandler.OnMasterLeaveWindow += LeaveWindow;
     }
     
     private void OnDisable()
     {
         EventHandler.OnClockUsed -= ClockUsed;
+        EventHandler.OnMasterLeaveWindow -= LeaveWindow;
     }
 }

@@ -26,8 +26,9 @@ public class Cup : ItemBase
                
             });
             gameObject.SetActive(false);
-            //ÎüÒıÖ÷ÈË
+            //å¸å¼•ä¸»äºº
             AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.ItemBroken);
+            EventHandler.ItemBroke(this);
             EventHandler.AttentionEventHappen(attentionEvent);
 
         });

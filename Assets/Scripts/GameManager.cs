@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
             TipPopManager.instance.ShowTip("Day 387 of House Arrest\nThe same scratching post. The same stupid window view. The same two-legged saying “who’s a good kitty?”" +
                                            " like I don’t understand EVERY condescending word!" +
                                            " Today ends differently. Time to show them why ancient Egyptians worshipped my kind……Meow~");
-            Cat.instance.enable = false;
             TipPopManager.instance.OnTipClosed += ShowHintPanel;
         }
 

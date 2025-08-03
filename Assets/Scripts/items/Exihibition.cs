@@ -42,8 +42,9 @@ public class Exihibition : ItemBase
         statue.transform.DOLocalMove(new Vector3(statue.transform.position.x, -3.21f, statue.transform.position.z), 0.2f).OnComplete(
             ()=> {
                 broken.SetActive(true);
-                //ÎüÒıÖ÷ÈË
+                //å¸å¼•ä¸»äºº
                 AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.ItemBroken);
+                EventHandler.ItemBroke(this);
                 EventHandler.AttentionEventHappen(attentionEvent);
             });
     }

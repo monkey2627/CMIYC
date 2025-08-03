@@ -12,6 +12,8 @@ public static class EventHandler
     
     public static event Action OnClockUsed;
     
+    public static event Action OnMasterLeaveWindow;
+    
     public static void AttentionEventHappen(AttentionEvent attentionEvent)
     {
         if (OnAttentionEventHappen != null)
@@ -47,4 +49,11 @@ public static class EventHandler
         if (OnClockUsed != null)
             OnClockUsed();
     }
+    
+    public static void MasterLeaveWindow()
+    {
+        if (OnMasterLeaveWindow != null)
+            OnMasterLeaveWindow();
+    }
+
 }

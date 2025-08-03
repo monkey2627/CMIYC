@@ -88,6 +88,7 @@ public class TipPopManager : MonoBehaviour
     {
         if (isShowing)
         {
+            isShowing = false;
             StopAllCoroutines();
             fadeTweener = tipCanvasGroup.DOFade(0, hideTime)
                 .OnComplete(() => 
@@ -99,6 +100,11 @@ public class TipPopManager : MonoBehaviour
     }
     private void Update()
     {
+        if (isShowing)
+            Cat.instance.enable = false;
+        else
+            Cat.instance.enable = true;
+        
         if (Input.GetKeyDown(KeyCode.M))
             TipPopManager.instance.ShowTip(
                 "You’ve always hated this painting. How dare your LOWLY SERVANT forget who the true master is—not even " +
