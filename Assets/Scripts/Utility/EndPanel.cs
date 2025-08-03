@@ -24,6 +24,6 @@ public class EndPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Cat.instance.enable = false;
     }
 }
