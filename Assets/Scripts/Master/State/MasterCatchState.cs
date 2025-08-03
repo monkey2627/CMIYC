@@ -48,7 +48,6 @@ public class MasterCatchState : MasterState
         {
             isCatch = true;
             master.Animator.SetBool("IsIdle", true);
-            // 抓到猫了，游戏失败！
             Debug.Log(" 抓到猫了，游戏失败！");
             EventHandler.CatchCat();
         }

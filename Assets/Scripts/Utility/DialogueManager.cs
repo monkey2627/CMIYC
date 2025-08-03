@@ -40,6 +40,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue()
     {
+        DoorHideDingDong();
         DialogueCanvas.gameObject.SetActive(true);
         DingDong.gameObject.SetActive(false);
         BubbleACanvasGroup.gameObject.SetActive(false);
@@ -92,11 +93,24 @@ public class DialogueManager : MonoBehaviour
         DingDong.DOFade(1, 0.5f);
         yield return new WaitForSeconds(1.5f);
         
-        DingDong.DOFade(0, 0.5f);
+        /*DingDong.DOFade(0, 0.5f);
         yield return new WaitForSeconds(0.5f);
 
         DingDong.gameObject.SetActive(false);
         
-        DialogueCanvas.gameObject.SetActive(false);
+        DialogueCanvas.gameObject.SetActive(false);*/
+    }
+    
+    public void DoorHideDingDong()
+    {
+        StartCoroutine(HideDingDong());
+    }
+
+    private IEnumerator HideDingDong()
+    {
+        DingDong.DOFade(0, 0.5f);
+        yield return new WaitForSeconds(0.5f);
+
+        DingDong.gameObject.SetActive(false);
     }
 }
