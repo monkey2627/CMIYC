@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class DoorGap : ItemBase
 {
+    public static DoorGap instance;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        instance = this;
     }
     public override void inter()
     {

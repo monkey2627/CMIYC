@@ -52,7 +52,7 @@ public class ItemBase : MonoBehaviour
     }
     public virtual void inter()
     {
-
+        item.SetActive(false);
     }
     // Update is called once per frame
     void Update()
@@ -81,10 +81,12 @@ public class ItemBase : MonoBehaviour
     /// </summary>
     public virtual void Show()
     {
+        if(item)
         item.SetActive(true);
     }
     public virtual void Hide()
     {
+        if(item)
         item.SetActive(false);
     }
     public virtual void ScratchByDog()
