@@ -606,10 +606,10 @@ public class Cat : MonoBehaviour
     /// <summary>
     /// 猫咪藏起来,燃气灶和冰箱夹缝，沙发下，电脑桌下，床下可以藏身
     /// </summary>
-    public void Hide()
+    public void Hide(int layer)
     {
         isHiding = true;
-        layerNow = 2;
+        layerNow = layer;
         isChangingLayer = true;
         transform.DOMove(new Vector3(transform.position.x, transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
                    () => { isChangingLayer = false; });
@@ -621,7 +621,8 @@ public class Cat : MonoBehaviour
         if (isHiding)
         {
             isHiding = false;
-            layerNow = 1;
+            if(layerNow+1<=3)
+                layerNow +=1;
             isChangingLayer = true;
             transform.DOMove(new Vector3(transform.position.x, transform.position.y, layerPlace[layerNow]), 0.5f).OnComplete(
                        () => { isChangingLayer = false; });

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WildMeowItem : MonoBehaviour
 {
+    public GameObject window;
    public void Disappera()
     {
         gameObject.SetActive(false);

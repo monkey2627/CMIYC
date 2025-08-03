@@ -10,6 +10,7 @@ public class Window : ItemBase
     public override void inter()
     {
         base.inter();
+        enable = false;
         meowItem.SetActive(true);
         //吸引主人
         AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.WildCatMeow);
