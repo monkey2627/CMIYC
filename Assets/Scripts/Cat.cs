@@ -93,8 +93,6 @@ public class Cat : MonoBehaviour
 
         // 存储碰撞信息
         RaycastHit hit;
-        Debug
-.DrawRay(origin, direction * maxDistance, Color.red);
 
         // 发射射线
         if (Physics.Raycast(origin, direction, out hit, maxDistance))
@@ -110,6 +108,7 @@ public class Cat : MonoBehaviour
     }
     public static bool CheckForGuizi()
     {
+      
         // 获取 Cat.instance.gameObject 的位置
         Vector3 origin = Cat.instance.gameObject.transform.position;
 
@@ -117,7 +116,7 @@ public class Cat : MonoBehaviour
         Vector3 direction = new Vector3(0,0,1f);
 
         // 射线的最大长度
-        float maxDistance = 2f;
+        float maxDistance = 1f;
 
         // 存储碰撞信息
         RaycastHit hit;
@@ -528,7 +527,6 @@ public class Cat : MonoBehaviour
         if(item)
         {
             item.Show();
-            Debug.Log("附近有可以交互的物体"+item.name);
         }
         
         if (Input.GetKeyDown(KeyCode.E) && stateinfo.IsName("IDEL") && !isOnPicture)
@@ -717,6 +715,7 @@ public class Cat : MonoBehaviour
     public float jumpForce = 5.0f; // 跳跃力
     public bool isJumping = false;
     public int jumpCount = 0;
+
     public  float maxJumpHeight = 6.0f; // 最大弹跳高度
     /// <summary>
     /// 处理跳跃时的逻辑
@@ -728,6 +727,7 @@ public class Cat : MonoBehaviour
         finishOnFloorAni = false;
         rb.useGravity = true;
         staticTime = 0;
+        rb.isKinematic = false;
         sceneNow.EndObsearve();
         isJumping = true;
         animator.SetBool("Jump", true);
