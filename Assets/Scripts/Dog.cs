@@ -3,23 +3,23 @@ using DG.Tweening;
 public class Dog : ItemBase
 {
     public static Dog instance;
-    public float moveSpeed = 5.0f; // ÒÆ¶¯ËÙ¶È
-    public float dashSpeed = 10.0f; // ³å´ÌËÙ¶È
-    public float dodgeDistance = 2.0f; // ºóÍË¾àÀë
-    public float waitTime = 5.0f; // µÈ´ýÊ±¼ä
-    public Transform home; // ¹·ÎÑµÄÎ»ÖÃ
-    public Rigidbody rb; // ¹·µÄ Rigidbody ×é¼þ
+    public float moveSpeed = 5.0f; // ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
+    public float dashSpeed = 10.0f; // ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+    public float dodgeDistance = 2.0f; // ï¿½ï¿½ï¿½Ë¾ï¿½ï¿½ï¿½
+    public float waitTime = 5.0f; // ï¿½È´ï¿½Ê±ï¿½ï¿½
+    public Transform home; // ï¿½ï¿½ï¿½Ñµï¿½Î»ï¿½ï¿½
+    public Rigidbody rb; // ï¿½ï¿½ï¿½ï¿½ Rigidbody ï¿½ï¿½ï¿½
     public GameObject delay;
-    private float timer = 0.0f; // ¼ÆÊ±Æ÷
-    public bool isMoving2Cat = false; // ÊÇ·ñÕýÔÚÒÆ¶¯
-    private bool isByCat = false;//ÊÇ·ñÒÑ¾­×ßµ½Ð¡Ã¨ÅÔ±ß²¢×øÏÂ
-    public bool isReturning = false; // ÊÇ·ñÕýÔÚ·µ»ØÎÑÖÐ
-    public bool isDashing = false; // ÊÇ·ñÕýÔÚ³å´Ì
-    private bool isDodging = false; // ÊÇ·ñÕýÔÚºóÍË
-    public Vector3 dashDirection; // ³å´Ì·½Ïò
+    private float timer = 0.0f; // ï¿½ï¿½Ê±ï¿½ï¿½
+    public bool isMoving2Cat = false; // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+    private bool isByCat = false;//ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ßµï¿½Ð¡Ã¨ï¿½Ô±ß²ï¿½ï¿½ï¿½ï¿½ï¿½
+    public bool isReturning = false; // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public bool isDashing = false; // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½
+    private bool isDodging = false; // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½
+    public Vector3 dashDirection; // ï¿½ï¿½Ì·ï¿½ï¿½ï¿½
     public float dashTarget; 
     public bool hasCat;
-    public bool seePendant;//ÊÇ·ñÔÚ¿´µõµÆ
+    public bool seePendant;//ï¿½Ç·ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½ï¿½
     public Animator animator;
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class Dog : ItemBase
     public override void inter()
     {
         base.inter();
-        // ×¥ÄÓ¹·£¬´¥·¢¹·µÄºóÍËºÍ¿ñ·ÍÐÐÎª
+        // ×¥ï¿½Ó¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ËºÍ¿ï¿½ï¿½ï¿½ï¿½Îª
         DodgeCat();
     }
     public float speed = 5;
@@ -50,27 +50,27 @@ public class Dog : ItemBase
             float moveHorizontal = 0.0f;
             float moveVertical = 0.0f;
             bool move = false;
-            if (Input.GetKey(KeyCode.A)) // °´ÏÂ A ¼ü
+            if (Input.GetKey(KeyCode.A)) // ï¿½ï¿½ï¿½ï¿½ A ï¿½ï¿½
             {
 
                 move = true;
-                moveHorizontal = -1.0f; // Ïò×óÒÆ¶¯
+                moveHorizontal = -1.0f; // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
             }
-            else if (Input.GetKey(KeyCode.D)) // °´ÏÂ D ¼ü
+            else if (Input.GetKey(KeyCode.D)) // ï¿½ï¿½ï¿½ï¿½ D ï¿½ï¿½
             {
                 move = true;
-                moveHorizontal = 1.0f; // ÏòÓÒÒÆ¶¯
+                moveHorizontal = 1.0f; // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
             }
 
-            if (Input.GetKey(KeyCode.W)) // °´ÏÂ W ¼ü
+            if (Input.GetKey(KeyCode.W)) // ï¿½ï¿½ï¿½ï¿½ W ï¿½ï¿½
             {
                 move = true;
-                moveVertical = 1.0f; // ÏòÇ°ÒÆ¶¯
+                moveVertical = 1.0f; // ï¿½ï¿½Ç°ï¿½Æ¶ï¿½
             }
-            else if (Input.GetKey(KeyCode.S)) // °´ÏÂ S ¼ü
+            else if (Input.GetKey(KeyCode.S)) // ï¿½ï¿½ï¿½ï¿½ S ï¿½ï¿½
             {
                 move = true;
-                moveVertical = -1.0f; // ÏòºóÒÆ¶¯
+                moveVertical = -1.0f; // ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
             }
             else
             {
@@ -109,29 +109,30 @@ public class Dog : ItemBase
         }
     }
     /// <summary>
-    /// ¹·×¥ÄÓÎüitemÒýÖ÷ÈË
+    /// ï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½itemï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void Scratch(ItemBase item)
     {
-        //1.¸ù¾ÝitemµÄÖÖÀà×ßµ½ÏàÓ¦Î»ÖÃ
+        //1.ï¿½ï¿½ï¿½ï¿½itemï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½Ó¦Î»ï¿½ï¿½
         animator.SetBool("Walk",true);
         Vector3 movement = new Vector3(item.position.x-transform.position.x, transform.position.y, item.position.z-transform.position.z);
         animator.SetFloat("WalkDirection", movement.x);
         transform.DOMove(transform.position + movement, 1).OnComplete(()=> {
-            //Í£Ö¹×ßÂ·
+            //Í£Ö¹ï¿½ï¿½Â·
             animator.SetBool("Walk", false);
             //
             item.ScratchByDog();
-            //ÎüÒýÖ÷ÈË
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.DogDestruction);
+            EventHandler.ItemBroke(item);
             EventHandler.AttentionEventHappen(attentionEvent);
         });
     }
     public Vector3 gap;
     /// <summary>
-    /// Èô¹·ÔÚÈÎÒâ×´Ì¬ÏÂ±»Ã¨Ìøµ½ÁËÉíÉÏ£¬ÔòÁ¢¿Ì½â³ýÖ®Ç°µÄÒ»ÇÐ×´Ì¬²¢ÊÜÍæ¼Ò²Ù¿Ø
-    /// (¿ÉÒÔ×óÓÒÒÆ¶¯µ«²»ÄÜÌøÔ¾£¬
-    /// µãÌøÔ¾Ê±½öÃ¨×Ô¼ºÌø£¬ÇÒÆðÌøºóµÄWASD ÊÇ²Ù¿ØÃ¨£¬¹·»áÔÚÔ­µØÅ¿×ø)¡£
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½Â±ï¿½Ã¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½Ö®Ç°ï¿½ï¿½Ò»ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²Ù¿ï¿½
+    /// (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½
+    /// ï¿½ï¿½ï¿½ï¿½Ô¾Ê±ï¿½ï¿½Ã¨ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½WASD ï¿½Ç²Ù¿ï¿½Ã¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½Å¿ï¿½ï¿½)ï¿½ï¿½
     /// </summary>
     public void CatJumpOn()
     {
@@ -156,13 +157,13 @@ public class Dog : ItemBase
             GetComponent<SpriteRenderer>().sortingOrder = 6;
             transform.DOMove(new Vector3(transform.position.x, transform.position.y, 5), 0.1f);
         }
-        //todo ¶¯»­
+        //todo ï¿½ï¿½ï¿½ï¿½
         animator.SetBool("Walk",true);
         Vector3 movement = new Vector3((home.position - transform.position).normalized.x * moveSpeed * Time.deltaTime, 0, 0);
-        // ·µ»ØÎÑÖÐ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         transform.position += movement;
 
-        // Èç¹ûµ½´ïÎÑµÄÎ»ÖÃ£¬Í£Ö¹·µ»Ø
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñµï¿½Î»ï¿½Ã£ï¿½Í£Ö¹ï¿½ï¿½ï¿½ï¿½
         if (Vector3.Distance(transform.position, home.position) < 0.5f)
         {
             animator.SetBool("Walk", false);
@@ -170,7 +171,7 @@ public class Dog : ItemBase
         }
     }
     /// <summary>
-    /// Ð¡Ã¨½ÐµÄÊ±ºò£¬ÏòÐ¡Ã¨µÄÎ»ÖÃÒÆ¶¯
+    /// Ð¡Ã¨ï¿½Ðµï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ð¡Ã¨ï¿½ï¿½Î»ï¿½ï¿½ï¿½Æ¶ï¿½
     /// </summary>
     public void MoveToCat()
     {
@@ -191,17 +192,17 @@ public class Dog : ItemBase
         Debug.Log(movement);
         animator.SetBool("Walk", true);
         animator.SetFloat("WalkDirection", (-transform.position + Cat.instance.transform.position).normalized.x);
-        // Èç¹ûµ½´ïÐ¡Ã¨Î»ÖÃ£¬Í£Ö¹ÒÆ¶¯
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡Ã¨Î»ï¿½Ã£ï¿½Í£Ö¹ï¿½Æ¶ï¿½
         if (Mathf.Abs((Cat.instance.transform.position - transform.position).x) <= Cat.instance.dogLength * 3)
         {
             isMoving2Cat = false;
-            Debug.Log("µ½´ï");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½");
             animator.SetBool("Walk", false);
-            timer = 0.0f; // ÖØÖÃ¼ÆÊ±Æ÷
+            timer = 0.0f; // ï¿½ï¿½ï¿½Ã¼ï¿½Ê±ï¿½ï¿½
         }
     }
     /// <summary>
-    /// ±»Ã¨×¥ÄÓ/±»µôÂäÎï»÷ÖÐºó»áÍùºó¶ã±Ü£¬²¢Õ¾¶¨ÏòÃ¨/µôÂäÎï¿ñ·Í£¬²¢ÎüÒýÖ÷ÈËÇ°À´²é¿´,Ö»»á±»ÕâÒ»²ãµÄÎïÌåÔÒÖÐ
+    /// ï¿½ï¿½Ã¨×¥ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü£ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ã¨/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½é¿´,Ö»ï¿½á±»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void Bark()
     {
@@ -210,21 +211,21 @@ public class Dog : ItemBase
     }
     public float dashLength;
     /// <summary>
-    /// Ïòß÷ß÷½ÐÊ±µÄÎ»ÖÃÖ±ÏßÅÜ¶¯²¢³å³öÈ¥2¸ö¹·³¤¶ÈµÄ¾àÀë£¬ËæºóÔÚÖÕµãÔ­µØÅ¿×ø
-    /// (Èô×²µ½Ç½»ò×²µ½²»¿ÉÒÆ¶¯µÄÎïÌå£¬Èç°ÉÌ¨¡¢´²Í·¹ñµÈ£¬Ôò×²ÍêºóÊ¹ÆäÉÏµÄÎïÆ·»Î¶¯²¢µôÏÂÀ´£¬
-    /// ¹·×ÔÉíÔÚ×²µ½ÆäµÄµØ
-    ///·½Å¿×ø;Èô×²µ½¿ÉÒÔÒÆ¶¯µÄÎïÌå£¬Èç×ªÒÎµÈ£¬Ôò×²ÍêºóÊ¹ÆäÒÆ¶¯1¸ö¹·³¤¶ÈµÄ¾àÀë)¡£¡°
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Î»ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ü¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÈµÄ¾ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½Ô­ï¿½ï¿½Å¿ï¿½ï¿½
+    /// (ï¿½ï¿½×²ï¿½ï¿½Ç½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½È£ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½Æ·ï¿½Î¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½Äµï¿½
+    ///ï¿½ï¿½Å¿ï¿½ï¿½;ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å£¬ï¿½ï¿½×ªï¿½ÎµÈ£ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Æ¶ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÈµÄ¾ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void Dash()
     {
-        // ÏòÄ¿±ê·½Ïò³å´Ì
+        // ï¿½ï¿½Ä¿ï¿½ê·½ï¿½ï¿½ï¿½ï¿½
          Vector3 gap = dashDirection * dashSpeed * Time.deltaTime;
          dashLength +=  gap.magnitude;
          transform.position += gap;
          isDashing = true;
          animator.SetFloat("WalkDirection", gap.normalized.x);
          animator.SetFloat("Horiziontal", gap.normalized.x);
-        // ¼ì²éÊÇ·ñ³å´ÌÍê³É
+        // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (dashLength>dashTarget)
         {
             isDashing = false;
@@ -243,7 +244,7 @@ public class Dog : ItemBase
         animator.SetBool("Run", false);
     }
     /// <summary>
-    /// ±»Ã¨ßä×¥ÄÓÖ®ºó£¬ÍËºóÈ»ºó½Ð
+    /// ï¿½ï¿½Ã¨ï¿½ï¿½×¥ï¿½ï¿½Ö®ï¿½ï¿½ï¿½Ëºï¿½È»ï¿½ï¿½ï¿½
     /// </summary>
     public void DodgeCat()
     {
@@ -251,7 +252,7 @@ public class Dog : ItemBase
         Vector3 movement = new Vector3((transform.position - Cat.instance.transform.position).x,0, (transform.position - Cat.instance.transform.position).z);
         transform.DOMove(transform.position+ movement.normalized * Cat.instance.dogLength, 1).OnComplete(() =>
         {
-            //todo ÃæÏòÃ¨
+            //todo ï¿½ï¿½ï¿½ï¿½Ã¨
             if((-transform.position + Cat.instance.transform.position).x > 0)
             {
                 animator.SetFloat("WalkDirection", 1);
@@ -265,7 +266,7 @@ public class Dog : ItemBase
         });
     }
     /// <summary>
-    /// ¹·±»ÎïÆ·ÔÒÖÐ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="itemTarget"></param>
     public void Dodge(Vector3 itemTarget)
@@ -274,7 +275,7 @@ public class Dog : ItemBase
         Vector3 movement = new Vector3((transform.position - itemTarget).x, 0, (transform.position - itemTarget).z);
         transform.DOMove(transform.position + movement.normalized * Cat.instance.dogLength, 1).OnComplete(() =>
         {
-            //todo ÃæÏòÎïÆ·
+            //todo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·
             if ((-transform.position + itemTarget).x > 0)
             {
                 animator.SetFloat("WalkDirection", 1);
@@ -289,7 +290,7 @@ public class Dog : ItemBase
     }
     public void ResetTimer()
     {
-        // ÖØÖÃ¼ÆÊ±Æ÷
+        // ï¿½ï¿½ï¿½Ã¼ï¿½Ê±ï¿½ï¿½
         timer = 0.0f;
     }
     private void OnCollisionEnter(Collision collision)
@@ -331,7 +332,7 @@ public class Dog : ItemBase
         return false;
     }
     /// <summary>
-    /// ×ßµ½µõµÆ´¦È»ºó¿´
+    /// ï¿½ßµï¿½ï¿½ï¿½ï¿½Æ´ï¿½È»ï¿½ï¿½
     /// </summary>
     public void Move2Pendant()
     {
