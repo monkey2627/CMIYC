@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MasterBusyState : MasterState
 {
+    private float _singleTimer = 0f;
+    private int currentIndex = 0;
+    
     private float _busyTimer = 0f;
     private float _busyTotalTime;
 
@@ -19,6 +22,9 @@ public class MasterBusyState : MasterState
         base.EnterState();
         _busyTimer = 0f;
         DoBusyAction();
+        
+        _singleTimer = 0f;
+        currentIndex = 0;
     }
 
     public override void ExitState()
@@ -66,10 +72,38 @@ public class MasterBusyState : MasterState
         {
             _busyTimer = 0f;
             master.StateMachine.ChangeState(master.IdleState);
+            return;
         }
         _busyTimer += Time.deltaTime;
         
+        
+        // 更新计时器
+        _singleTimer += Time.deltaTime;
+
+        // 检查是否达到播放动画的时间
+        if (_singleTimer >= 3.8f && _busyTimer > currentIndex * 5f && currentIndex != -1)
+        {
+            PlayAnimationForCurrentItem();
+            _singleTimer = 0f; // 重置计时器
+        }
+        _singleTimer += Time.deltaTime;
     }
+    
+    private void PlayAnimationForCurrentItem()
+    {
+        if (currentIndex < master.ItemToFixList.Count)
+        {
+            ItemBase currentItem = master.ItemToFixList[currentIndex];
+            currentItem.PlayRecoverAnimation(); 
+            
+            currentIndex++;
+        }
+        else
+        {
+            currentIndex = -1;
+        }
+    }
+
 
     public void DoBusyAction()
     {
@@ -81,7 +115,7 @@ public class MasterBusyState : MasterState
                 master.Animator.SetBool("IsUsingMagic", true);
                 break;
             case AttentionEventType.DogDestruction:
-                _busyTotalTime = 5f;
+                _busyTotalTime = master.ItemToFixList.Count * 5f;
                 master.Animator.SetBool("IsUsingMagic", true);
                 break;
             case AttentionEventType.GuestArrive:
