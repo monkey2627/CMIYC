@@ -8,5 +8,8 @@ public class CatAudioManager : MonoBehaviour
     AudioClip walk1;
     AudioClip walk2;
 
-    public void 
+    public void Walk()
+    {
+
+    }
 }
