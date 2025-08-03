@@ -63,13 +63,20 @@ public class SceneBase : MonoBehaviour
                 nearestItem = item;
             }
         }
-        Debug.Log(minDistance + " " + nearestItem.gameObject.name);
-        if(minDistance < targetDistance && nearestItem.enable)
+        if (nearestItem != null)
         {
-            return nearestItem;
+            Debug.Log(minDistance + " " + nearestItem.gameObject.name);
+            if (minDistance < targetDistance && nearestItem.enable)
+            {
+                return nearestItem;
+            }
+            else
+                return null;
         }
-        else 
-            return null; 
+        else
+        {
+            return null;
+        }
     }
     public void Obsearve()
     {

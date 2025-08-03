@@ -48,7 +48,20 @@ public class ItemBase : MonoBehaviour
     public 
     void Start()
     {
-        
+        isInThisLayer = false;
+        int min = 9;
+        foreach (var item in layer)
+        {
+            if ((int)item < min)
+                min = (int)item;
+            if (item == Layer.Three)
+                isInThisLayer = true;
+        }
+        if (min > (int)Layer.Three)
+            gameObject.GetComponent<SpriteRenderer>().DOFade(0.3f, 0.01f);
+        else
+            gameObject.GetComponent<SpriteRenderer>().DOFade(1f, 0.01f);
+
     }
     public virtual void inter()
     {

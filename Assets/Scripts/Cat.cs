@@ -345,7 +345,7 @@ public class Cat : MonoBehaviour
         if (!enable)
         {
             animator.SetBool("Walk", false);
-            Dog.instance.animator.SetBool("walk", false);
+            Dog.instance.animator.SetBool("Walk", false);
         }
         else
         {
