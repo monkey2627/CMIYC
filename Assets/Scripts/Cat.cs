@@ -168,6 +168,7 @@ public class Cat : MonoBehaviour
     int unMoveTime = 0;
     private void Update()
     {
+        CheckForExi();
         AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
         #region tiaotiaoya Ð§¹û
         tiaotiaoyaCount += Time.deltaTime;
