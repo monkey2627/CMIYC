@@ -9,6 +9,7 @@ public class Crucible : ItemBase
     bool isSmoking = false;
     HerbType herb ;   // 坩埚内当前存在的药草
     public bool hasHerb = false;
+    public GameObject FinishIcon;
     public override void inter()
     {
         base.inter();
@@ -16,7 +17,11 @@ public class Crucible : ItemBase
         {
            if(Cat.instance.materialNumber != -1)
             {
-                Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].GetComponent<SpriteRenderer>().DOFade(0, 0.3f);
+                Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].GetComponent<SpriteRenderer>().DOFade(0, 0.3f).OnComplete(()=> {
+
+                    FinishIcon.GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
+                
+                });
                 Cat.instance.herbSprites[Cat.instance.herbSpritesNumber].SetActive(false);
                 hasHerb = true;
                 herb = (HerbType)Cat.instance.materialNumber;
@@ -29,6 +34,8 @@ public class Crucible : ItemBase
                 {
                     //todo 获得效果
                     Debug.Log("喝下魔药");
+                    FinishIcon.GetComponent<SpriteRenderer>().DOFade(0, 0.5f);
+                    hasHerb = false;
                     Cat.instance.bubble.SetActive(true);
                     Cat.instance.tiaotiaoyaCount = 0;
                 }

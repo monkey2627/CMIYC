@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,33 +6,27 @@ using UnityEngine;
 public class Cup : ItemBase
 {
     private Rigidbody rb;
+    public GameObject crash;
     public bool firstCollision = true;
-    // Start is called before the first frame update
-    void Start()
+    public GameObject delay;
+    public GameObject crashIcon;
+    public override void inter()
     {
-        
-    }
+        Cat.instance.Push();
+        delay.transform.DOMove(new Vector3(0, 0, 0), 1f).OnComplete(() => { Cat.instance.StopPush(); });
+        transform.DOLocalMove(new Vector3(transform.localPosition.x - 0.1f, -40.43f, transform.localPosition.z),2f).OnComplete(()=> {
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            enable = false;
+            crash.SetActive(true);
+            transform.GetComponent<SpriteRenderer>().DOFade(0, 0.2f).OnComplete(()=> { 
+                crashIcon.SetActive(true);
+            });
+            //吸引主人
+            AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.ItemBroken);
+            EventHandler.AttentionEventHappen(attentionEvent);
+
+        });
     }
-    void OnCollisionEnter(Collision collision)
-    {
-        // 检测水杯是否落地
-        if (collision.gameObject.CompareTag("Floor"))
-        {
-            // 停止所有运动
-            rb.velocity = Vector3.zero; // 将速度设置为零
-            rb.angularVelocity = Vector3.zero; // 将角速度设置为零
-            rb.isKinematic = true; // 设置为运动学模式，禁止物理影响
-        }else if (collision.gameObject.CompareTag("Dog"))
-        {
-            if (!firstCollision) return;
-            Dog.instance.Dodge(transform.position);
-            firstCollision = false;
-        }
-    }
+    
 
 }

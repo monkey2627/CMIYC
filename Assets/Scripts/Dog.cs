@@ -135,6 +135,7 @@ public class Dog : ItemBase
     public void CatJumpOn()
     {
         hasCat = true;
+        animator.SetBool("HasCat", true);
         isMoving2Cat = false;
         isReturning = false;
         isDashing = false;
@@ -143,16 +144,25 @@ public class Dog : ItemBase
     {
         hasCat = false;
         animator.SetBool("Walk", false);
+        animator.SetBool("HasCat", false);
     }
     private void MoveToHome()
     {
+        if (layer[0] != ((Layer)2))
+        {
+            layer[0] = ((Layer)2);
+            GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)2).ToString();
+            GetComponent<SpriteRenderer>().sortingOrder = 6;
+            transform.DOMove(new Vector3(transform.position.x, transform.position.y, 5), 0.1f);
+        }
         //todo 动画
         animator.SetBool("Walk",true);
+        Vector3 movement = new Vector3((home.position - transform.position).normalized.x * moveSpeed * Time.deltaTime, 0, 0);
         // 返回窝中
-        transform.position = Vector3.MoveTowards(transform.position, home.position, moveSpeed * Time.deltaTime);
+        transform.position += movement;
 
         // 如果到达窝的位置，停止返回
-        if (Vector3.Distance(transform.position, home.position) < 0.01f)
+        if (Vector3.Distance(transform.position, home.position) < 0.5f)
         {
             animator.SetBool("Walk", false);
             isReturning = false;
@@ -163,23 +173,28 @@ public class Dog : ItemBase
     /// </summary>
     public void MoveToCat()
     {
-        layer[0] = ((Layer)Cat.instance.layerNow);
-        GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
-        GetComponent<SpriteRenderer>().sortingOrder = 6;
-        int[] a = { 10, 5, 0 };
-        transform.DOMove(new Vector3(transform.position.x, transform.position.y, a[(int)layer[0]]), 0.1f);
+        if (layer[0] != ((Layer)Cat.instance.layerNow))
+        {
+            layer[0] = ((Layer)Cat.instance.layerNow);
+            GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)Cat.instance.layerNow).ToString();
+            GetComponent<SpriteRenderer>().sortingOrder = 6;
+            int[] a = { 10, 5, 0 };
+            transform.DOMove(new Vector3(transform.position.x, transform.position.y, a[(int)layer[0]]), 0.1f);
+        }
+        rb.isKinematic = true;
         isReturning = false;
         isMoving2Cat = true;
         timer = 0.0f;
-        //todo 狗的走路动画
-        transform.position += new Vector3((-transform.position+Cat.instance.transform.position).x,0, (-transform.position + Cat.instance.transform.position).z).normalized * moveSpeed * Time.deltaTime;
+        Vector3 movement = new Vector3((Cat.instance.transform.position - transform.position).normalized.x * moveSpeed * Time.deltaTime, 0, 0);
+        transform.position += movement;
+        Debug.Log(movement);
         animator.SetBool("Walk", true);
         animator.SetFloat("WalkDirection", (-transform.position + Cat.instance.transform.position).normalized.x);
-        Debug.Log(Mathf.Abs(Cat.instance.transform.position.x - Dog.instance.position.x));
         // 如果到达小猫位置，停止移动
-        if (Mathf.Abs(Cat.instance.transform.position.x - Dog.instance.position.x) <= Cat.instance.dogLength * 3)
+        if (Mathf.Abs((Cat.instance.transform.position - transform.position).x) <= Cat.instance.dogLength * 3)
         {
             isMoving2Cat = false;
+            Debug.Log("到达");
             animator.SetBool("Walk", false);
             timer = 0.0f; // 重置计时器
         }

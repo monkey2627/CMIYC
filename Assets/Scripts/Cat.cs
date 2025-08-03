@@ -6,6 +6,7 @@ using UnityEngine;
 public class Cat : MonoBehaviour
 {
     public static Cat instance;
+    public GameObject MeowIcon;
     public int layerNow;//标志主角现在所在层级
     public Level sceneNow;
     public float speed = 1f;
@@ -465,7 +466,7 @@ public class Cat : MonoBehaviour
         #endregion
         #region meow
         //静止且没有干其他事情的时候才可以喵喵叫
-        if (Input.GetKey(KeyCode.Q) && !isOnDog && !isJumping && !isScratching && stateinfo.IsName("IDEL") && !isInCabinet && !isInExihibt && !isOnPicture && !isHiding)
+        if (Input.GetKey(KeyCode.Q) && !isOnDog && !isJumping && !isScratching &&( stateinfo.IsName("IDEL") || stateinfo.IsName("Meow") )&& !isInCabinet && !isInExihibt && !isOnPicture && !isHiding)
         {
             isMeowing = true;
             animator.SetBool("Meow", true);
@@ -473,7 +474,9 @@ public class Cat : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Q))//停止按Q键代表猫咪不叫了，此时狗不走
         {
+            MeowIcon.SetActive(false);
             isMeowing = false;
+            Dog.instance.rb.isKinematic = false;
             if (Dog.instance.isMoving2Cat)
                 Dog.instance.gameObject.GetComponent<Animator>().SetBool("Walk", false);
         }
@@ -497,7 +500,7 @@ public class Cat : MonoBehaviour
             if (item)
             {
                 item.inter();
-                if(item.interType==InterType.Scratch && (Dog.instance.transform.position-transform.position).magnitude < dogLength)
+                if(item.interType==InterType.Scratch && Mathf.Abs(Dog.instance.transform.position.x-transform.position.x) < dogLength)
                 {
                     Dog.instance.Scratch(item);
                 }
@@ -522,8 +525,11 @@ public class Cat : MonoBehaviour
         GetComponent<SpriteRenderer>().sortingOrder = 7;
         herbSprites[0].GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)layerNow).ToString();
         bubble.GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)layerNow).ToString();
+        MeowIcon.GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)layerNow).ToString();
         herbSprites[0].GetComponent<SpriteRenderer>().sortingOrder = 7;
         bubble.GetComponent<SpriteRenderer>().sortingOrder = 7;
+        MeowIcon.GetComponent<SpriteRenderer>().sortingOrder = 7;
+        
 
     }
     public void GetMaterial(int herb)
@@ -623,28 +629,34 @@ public class Cat : MonoBehaviour
         staticTime = 0;
         EndHide();
         sceneNow.EndObsearve();
+        MeowIcon.SetActive(true);
         isMeowing = true;
         animator.SetBool("Meow", true);
-        if ((Dog.instance.transform.position - transform.position).magnitude > 3 * dogLength)
+        float dis = Mathf.Abs((Dog.instance.transform.position - transform.position).x);
+        Debug.Log("Meow" + Dog.instance.transform.position + "   " + transform.position + " " + dis + " "+ 3 * dogLength);
+        if (dis > 3 * dogLength)
         {
             if (Dog.instance.isDashing) return;
+           // Debug.Log("Move2Cat");
             Dog.instance.MoveToCat();
             Dog.instance.ResetTimer();
         }
         else if (Dog.instance.isReturning)
         {
+            Debug.Log("return");
             Dog.instance.isReturning = false;
             Dog.instance.SitDown();
         }
-        else 
+       /* else 
         {
             if (Dog.instance.isDashing) return;
+            Debug.Log("Dash");
             Dog.instance.dashDirection =new Vector3((transform.position - Dog.instance.transform.position).x,0,(transform.position - Dog.instance.transform.position).z).normalized;
             Dog.instance.dashTarget = 2 * dogLength;
             Dog.instance.GetComponent<Animator>().SetBool("Run", true);
             Dog.instance.isDashing = true;
             Dog.instance.dashLength = 0;
-        }
+        }*/
 
     }
     /// <summary>
