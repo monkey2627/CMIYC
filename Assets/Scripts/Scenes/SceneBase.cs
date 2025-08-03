@@ -52,8 +52,9 @@ public class SceneBase : MonoBehaviour
                 continue;
             }
 
+
             // 计算猫与当前物品的距离
-            float distance = Mathf.Abs( Cat.instance.transform.position.x- item.transform.position.x);
+            float distance = new Vector2(Cat.instance.transform.position.x - item.transform.position.x, Cat.instance.transform.position.y - item.transform.position.y).magnitude;
 
             // 如果当前物品更近，则更新最近物品
             if (distance < minDistance && item.enable && item.isInThisLayer)
