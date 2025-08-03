@@ -35,9 +35,9 @@ public class Cat : MonoBehaviour
     {
         materialNumber = -1;
         rb = GetComponent<Rigidbody>();
-        layerNow = 2;
+        layerNow = 3;
         ChangeLayer();
-        transform.position = new Vector3(0, transform.position.y, 0);
+        transform.position = new Vector3(0, transform.position.y, 1);
         animator = GetComponent<Animator>();
         animator.SetBool("Back", false);
         rb.freezeRotation = true;
@@ -343,7 +343,7 @@ public class Cat : MonoBehaviour
             Debug.Log("yes");
             if (CheckForWall())
                 return;
-            if (layerNow > 0)
+            if (layerNow > 1 || (layerNow==1 && transform.position.x>=-66 && transform.position.x <=-47))
             {
                 layerNow--;
                 isChangingLayer = true;
@@ -382,7 +382,7 @@ public class Cat : MonoBehaviour
         {
             if (CheckForWallFront())
                 return;
-            if (layerNow < 2)
+            if (layerNow < 3)
             {
                 layerNow++;
                 EndHide();
