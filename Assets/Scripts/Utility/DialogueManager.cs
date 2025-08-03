@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance { get; private set; }
-    
+
     private void Awake()
     {
         if (instance == null)
@@ -19,30 +19,34 @@ public class DialogueManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-    
+
+    public Image DingDong;
+    public GameObject DialogueCanvas;
+
     public CanvasGroup BubbleACanvasGroup;
     public CanvasGroup BubbleBCanvasGroup;
-    /*public Text BubbleAText;
-    public Text BubbleBText;*/
     public float Duration = 30f;
-    
+
     public List<string> ASentences = new List<string>();
     public List<string> BSentences = new List<string>();
-
+    
     private void Start()
     {
         // StartDialogue();
+        DialogueCanvas.gameObject.SetActive(false);
         BubbleACanvasGroup.gameObject.SetActive(false);
         BubbleBCanvasGroup.gameObject.SetActive(false);
     }
 
     public void StartDialogue()
     {
+        DialogueCanvas.gameObject.SetActive(true);
+        DingDong.gameObject.SetActive(false);
         BubbleACanvasGroup.gameObject.SetActive(false);
         BubbleBCanvasGroup.gameObject.SetActive(false);
         StartCoroutine(PlayDialogue());
     }
-
+    
     private IEnumerator PlayDialogue()
     {
         float totalDuration = Duration / (ASentences.Count + BSentences.Count);
@@ -73,6 +77,26 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         dialogueBubble.gameObject.SetActive(false);
     }
+
+    public void DoorDingDong()
+    {
+        StartCoroutine(ShowDingDong());
+    }
     
-   
+    private IEnumerator ShowDingDong()
+    {
+        DialogueCanvas.gameObject.SetActive(true);
+        
+        DingDong.gameObject.SetActive(true);
+        DingDong.color = new Color(1, 1, 1, 0);
+        DingDong.DOFade(1, 0.5f);
+        yield return new WaitForSeconds(1.5f);
+        
+        DingDong.DOFade(0, 0.5f);
+        yield return new WaitForSeconds(0.5f);
+
+        DingDong.gameObject.SetActive(false);
+        
+        DialogueCanvas.gameObject.SetActive(false);
+    }
 }

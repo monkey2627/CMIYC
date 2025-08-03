@@ -8,6 +8,10 @@ public static class EventHandler
     public static event Action<ItemBase> OnItemBroke;
     public static event Action<bool> OnStoveStateChange;
     
+    public static event Action<bool> OnChangeDoorState;
+    
+    public static event Action OnClockUsed;
+    
     public static void AttentionEventHappen(AttentionEvent attentionEvent)
     {
         if (OnAttentionEventHappen != null)
@@ -30,5 +34,17 @@ public static class EventHandler
     {
         if (OnStoveStateChange != null)
             OnStoveStateChange(isOn);
+    }
+    
+    public static void ChangeDoorState(bool isOpen)
+    {
+        if (OnChangeDoorState != null)
+            OnChangeDoorState(isOpen);
+    }
+    
+    public static void ClockUsed()
+    {
+        if (OnClockUsed != null)
+            OnClockUsed();
     }
 }

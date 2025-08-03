@@ -35,6 +35,7 @@ public class MasterIdleState : MasterState
         if (Input.GetKeyDown(KeyCode.Y))
         {
             master.StateMachine.ChangeState(master.AlertState);
+            DialogueManager.instance.DoorDingDong();
             return;
         }
         master.Animator.SetBool("IsIdle", false);

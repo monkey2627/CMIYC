@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class Clock : ItemBase
         
         // 客人来访
         EventHandler.AttentionEventHappen(new AttentionEvent(Door, AttentionEventType.GuestArrive));
+        DialogueManager.instance.DoorDingDong();
         interactCnt++;
     }
 }
