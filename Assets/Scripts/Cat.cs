@@ -40,6 +40,7 @@ public class Cat : MonoBehaviour
         transform.position = new Vector3(0, transform.position.y, 1);
         animator = GetComponent<Animator>();
         animator.SetBool("Back", false);
+        enable = false;
         rb.freezeRotation = true;
         dogLength = Dog.instance.gameObject.GetComponent<BoxCollider>().size.x;
     }
@@ -59,12 +60,11 @@ public class Cat : MonoBehaviour
         Vector3 direction = new Vector3(0, 0, 1f);
 
         // 射线的最大长度
-        float maxDistance = 6f;
+        float maxDistance = 3.2f;
 
         // 存储碰撞信息
         RaycastHit hit;
-        Debug
-.DrawRay(origin, direction * maxDistance, Color.red);
+        Debug.DrawRay(origin, direction * maxDistance, Color.red);
 
         // 发射射线
         if (Physics.Raycast(origin, direction, out hit, maxDistance))

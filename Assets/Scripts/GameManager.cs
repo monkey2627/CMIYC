@@ -70,25 +70,7 @@ public class GameManager : MonoBehaviour
             "You may possess opposable thumbs, two-legged...yet my escape route remains PERFECTLY untraceable. You’ll never catch me again! Meow~");
         TipPopManager.instance.OnTipClosed += ShowCG;
         
-        Destroy(scenes[0]);
-        Destroy(Cat.instance.gameObject);
-        Destroy(Dog.instance.gameObject);
-        Destroy(MasterController.instance.gameObject);
-        //Ending.SetActive(true);
-        //delay.transform.DOMove(new Vector3(0, 0, 0),3).OnComplete(()=> { isEnding = true; });
-        // 从资源中加载场景
-        GameObject prefab = Resources.Load<GameObject>("Level");
-
-        // 检查Prefab是否加载成功
-        if (prefab != null)
-        {
-            // 实例化Prefab到场景中
-            GameObject instantiatedObject = Instantiate(prefab);
-            Cat.instance.sceneNow = instantiatedObject.GetComponent<Level>();
-            scenes[0] = instantiatedObject.GetComponent<Level>();
-        }
-        //重置小猫、小狗、主人的位置
-
+       
     }
 
     public void ShowCG()
