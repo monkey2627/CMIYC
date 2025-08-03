@@ -89,7 +89,7 @@ public class Cat : MonoBehaviour
         Vector3 direction = new Vector3(0, 0, -1f);
 
         // 射线的最大长度
-        float maxDistance = 6f;
+        float maxDistance = 3.2f;
 
         // 存储碰撞信息
         RaycastHit hit;
