@@ -160,6 +160,9 @@ public class MasterController : MonoBehaviour
         
         AttentionEvent = attentionEvent;
         hasNewEvent = true;
+        
+        if (StateMachine.CurState == IdleState)
+            StateMachine.ChangeState(AlertState);
     }
     
     private void AnimationTriggerEvent(AnimationTriggerType triggerType)
