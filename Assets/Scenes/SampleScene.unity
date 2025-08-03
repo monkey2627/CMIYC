@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -377,6 +378,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4753044804796090615, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3595
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753044804796090615, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3595
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753044804796090615, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3595
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248654985580197852, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 640
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248654985580197852, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248654985580197852, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.84682
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248654985580197852, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.84682
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248654985580197852, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.84682
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248654985580197852, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 581
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248654985580197852, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 330
+      objectReference: {fileID: 0}
     - target: {fileID: 7359586771011872270, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
       propertyPath: m_Color.a
       value: 0.6666667
@@ -384,6 +425,10 @@ PrefabInstance:
     - target: {fileID: 8964475787809030118, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
       propertyPath: m_Name
       value: OperationHintPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8964475787809030118, guid: e55c0bd2cecee584eb048fb844b7b709, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -611,6 +656,10 @@ PrefabInstance:
     - target: {fileID: 8948992479243360859, guid: ad69e8de3cae6754b9c240865d0ae0e8, type: 3}
       propertyPath: m_Name
       value: EndPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948992479243360859, guid: ad69e8de3cae6754b9c240865d0ae0e8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
