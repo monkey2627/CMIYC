@@ -10,6 +10,7 @@ public class OperationHintPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cat.instance.enable = false;
         closeButton.onClick.AddListener((() =>
         {
             StartCoroutine(Fade());
@@ -23,7 +24,7 @@ public class OperationHintPanel : MonoBehaviour
         canvasGroup.DOFade(0, 0.5f);
         yield return new WaitForSeconds(0.5f);
         
-        this.gameObject.SetActive(false);
         Cat.instance.enable = true;
+        this.gameObject.SetActive(false);
     }
 }

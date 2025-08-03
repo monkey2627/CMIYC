@@ -21,8 +21,9 @@ public class Cup : ItemBase
             transform.GetComponent<SpriteRenderer>().DOFade(0, 0.2f).OnComplete(()=> { 
                 crashIcon.SetActive(true);
             });
-            //ÎüÒıÖ÷ÈË
+            //å¸å¼•ä¸»äºº
             AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.ItemBroken);
+            EventHandler.ItemBroke(this);
             EventHandler.AttentionEventHappen(attentionEvent);
 
         });

@@ -6,6 +6,8 @@ public class MasterBusyState : MasterState
 {
     private float _busyTimer = 0f;
     private float _busyTotalTime;
+
+    private AttentionEventType busyType;
     // Start is called before the first frame update
     public MasterBusyState(MasterController master, MasterStateMachine masterStateMachine) : base(master, masterStateMachine)
     {
@@ -26,6 +28,28 @@ public class MasterBusyState : MasterState
         master.Animator.SetBool("IsBack", false);
         master.isOpeningDoor = false;
         EventHandler.ChangeDoorState(false);
+        switch (master.AttentionEvent.EventType)
+        {
+            case AttentionEventType.ItemBroken:
+                //master.Animator.SetBool("IsUsingMagic", false);
+                break;
+            case AttentionEventType.DogDestruction:
+                //master.Animator.SetBool("IsUsingMagic", false);
+                break;
+            case AttentionEventType.GuestArrive:
+                //master.Animator.SetBool("IsBack", false);
+                //EventHandler.ChangeDoorState(false);
+                //master.isOpeningDoor = false;
+                break;
+            case AttentionEventType.WildCatMeow:
+                //master.Animator.SetBool("IsBack", false);
+                EventHandler.MasterLeaveWindow();
+                break;
+            default:
+                break;
+        }
+        
+        master.ItemToFixList.Clear();
     }
 
     public override void UpdateState()
@@ -49,14 +73,19 @@ public class MasterBusyState : MasterState
 
     public void DoBusyAction()
     {
+        busyType = master.AttentionEvent.EventType;
         switch (master.AttentionEvent.EventType)
         {
             case AttentionEventType.ItemBroken:
                 _busyTotalTime = master.ItemToFixList.Count * 5f;
                 master.Animator.SetBool("IsUsingMagic", true);
                 break;
+            case AttentionEventType.DogDestruction:
+                _busyTotalTime = 5f;
+                master.Animator.SetBool("IsUsingMagic", true);
+                break;
             case AttentionEventType.GuestArrive:
-                _busyTotalTime = 10f;
+                _busyTotalTime = 15f;
                 master.Animator.SetBool("IsBack", true);
                 EventHandler.ChangeDoorState(true);
                 DialogueManager.instance.StartDialogue();

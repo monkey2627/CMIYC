@@ -133,6 +133,14 @@ public class MasterController : MonoBehaviour
     public void SearchAroundSelf()
     {
         // Check Items and Dog
+        for (int i = 0; i < BrokenItemList.Count; i++)
+        {
+            if (Mathf.Abs(BrokenItemList[i].transform.position.x - transform.position.x) < DogLength)
+            {
+                ItemToFixList.Add(BrokenItemList[i]);
+            }
+        }
+        
         float posDiff = Dog.instance.transform.position.x - this.transform.position.x;
         if (Math.Abs(posDiff) < 3 * DogLength)
             HasDogAround = true;

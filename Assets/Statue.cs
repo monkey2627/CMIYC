@@ -26,18 +26,19 @@ public class Statue : ItemBase
                 GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
                 gameObject.SetActive(false);
                 gameObject.transform.position = new Vector3(transform.localPosition.x, -3.21f, transform.localPosition.z);
-                //ÎüÒıÖ÷ÈË
+                //å¸å¼•ä¸»äºº
                 AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.ItemBroken);
+                EventHandler.ItemBroke(this);
                 EventHandler.AttentionEventHappen(attentionEvent);
             });
     }
     /// <summary>
-    /// Ã¨°ÑÕ¹Æ·ÍÆÏÂÈ¥
+    /// çŒ«æŠŠå±•å“æ¨ä¸‹å»
     /// </summary>
     public override void inter()
     {
         base.inter();
-        //ÏÔÊ¾ÎÄ±¾
+        //æ˜¾ç¤ºæ–‡æœ¬
         
         
     }
