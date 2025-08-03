@@ -1,10 +1,15 @@
+using System;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public bool skipStart = true;
+    public GameObject operationTipPanle;
+    public GameObject endPanel;
     public static GameManager instance;
     public SceneBase[] scenes;
     public int sceneNow;
@@ -16,11 +21,23 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         StartNewGame();
+
+        if (!skipStart)
+        {
+            TipPopManager.instance.ShowTip("Day 387 of House Arrest\nThe same scratching post. The same stupid window view. The same two-legged saying â€œwhoâ€™s a good kitty?â€" +
+                                           " like I donâ€™t understand EVERY condescending word!" +
+                                           " Today ends differently. Time to show them why ancient Egyptians worshipped my kindâ€¦â€¦Meow~");
+            Cat.instance.enable = false;
+            TipPopManager.instance.OnTipClosed += ShowHintPanel;
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.H))
+            Win();
         if(Input.GetMouseButtonDown(0) && isEnding)
         {
             StartNewGame();
@@ -30,34 +47,75 @@ public class GameManager : MonoBehaviour
     {
        
     }
+
+    public void ShowHintPanel()
+    {
+        operationTipPanle.SetActive(true);
+        CanvasGroup canvasGroup = operationTipPanle.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0;
+        canvasGroup.DOFade(1, 0.5f);
+
+        TipPopManager.instance.OnTipClosed -= ShowHintPanel;
+    }
+    
     public GameObject Ending;
     public GameObject delay;
     public bool isEnding = false;
     /// <summary>
-    /// Í¨¹ØÖ®ºóµ÷ÓÃ
+    /// é€šå…³ä¹‹åè°ƒç”¨
     /// </summary>
     public void Win()
     {
-        //Ò»ÏµÁĞ´¦Àí
-
+        //ä¸€ç³»åˆ—å¤„ç†
+        TipPopManager.instance.ShowTip(
+            "You may possess opposable thumbs, two-legged...yet my escape route remains PERFECTLY untraceable. Youâ€™ll never catch me again! Meow~");
+        TipPopManager.instance.OnTipClosed += ShowCG;
+        
         Destroy(scenes[0]);
         Destroy(Cat.instance.gameObject);
         Destroy(Dog.instance.gameObject);
         Destroy(MasterController.instance.gameObject);
-        Ending.SetActive(true);
-        delay.transform.DOMove(new Vector3(0, 0, 0),3).OnComplete(()=> { isEnding = true; });
-        // ´Ó×ÊÔ´ÖĞ¼ÓÔØ³¡¾°
+        //Ending.SetActive(true);
+        //delay.transform.DOMove(new Vector3(0, 0, 0),3).OnComplete(()=> { isEnding = true; });
+        // ä»èµ„æºä¸­åŠ è½½åœºæ™¯
         GameObject prefab = Resources.Load<GameObject>("Level");
 
-        // ¼ì²éPrefabÊÇ·ñ¼ÓÔØ³É¹¦
+        // æ£€æŸ¥Prefabæ˜¯å¦åŠ è½½æˆåŠŸ
         if (prefab != null)
         {
-            // ÊµÀı»¯Prefabµ½³¡¾°ÖĞ
+            // å®ä¾‹åŒ–Prefabåˆ°åœºæ™¯ä¸­
             GameObject instantiatedObject = Instantiate(prefab);
             Cat.instance.sceneNow = instantiatedObject.GetComponent<Level>();
             scenes[0] = instantiatedObject.GetComponent<Level>();
         }
-        //ÖØÖÃĞ¡Ã¨¡¢Ğ¡¹·¡¢Ö÷ÈËµÄÎ»ÖÃ
+        //é‡ç½®å°çŒ«ã€å°ç‹—ã€ä¸»äººçš„ä½ç½®
 
     }
+
+    public void ShowCG()
+    {
+        endPanel.SetActive(true);
+        CanvasGroup canvasGroup = endPanel.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0;
+        canvasGroup.DOFade(1, 0.5f);
+
+        TipPopManager.instance.ShowTip("Maybe next timeâ€¦â€¦");
+        TipPopManager.instance.OnTipClosed -= ShowCG;
+    }
+
+    public void OnCatCaught()
+    {
+        endPanel.SetActive(true);
+    }
+
+    private void OnEnable()
+    {
+        EventHandler.OnCatCaught += OnCatCaught;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.OnCatCaught -= OnCatCaught;
+    }
+    
 }

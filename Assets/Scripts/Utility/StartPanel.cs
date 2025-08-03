@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StartPanel : MonoBehaviour
@@ -14,10 +16,11 @@ public class StartPanel : MonoBehaviour
     {
         startButton.onClick.AddListener(() =>
         {
-            BlackMaskPanel.instance.Show();
-            this.gameObject.SetActive(false);
-            operationHintPanel.gameObject.SetActive(true);
+            //BlackMaskPanel.instance.Show();
+            StartCoroutine(Fade());
+            SceneManager.LoadSceneAsync(1);
         });
+        
         
         exitButton.onClick.AddListener(() =>
         {
@@ -29,9 +32,12 @@ public class StartPanel : MonoBehaviour
         });
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator Fade()
     {
-        
+        CanvasGroup canvasGroup = this.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 1;
+        canvasGroup.DOFade(0, 1f);
+        yield return new WaitForSeconds(1f);
+        this.gameObject.SetActive(false);
     }
 }
