@@ -33,6 +33,8 @@ public class MasterController : MonoBehaviour
     public bool ifSeeCat = false;
     
     public bool isOpeningDoor = false;
+
+    public bool isPlaying = true;
     
     public List<ItemBase> ItemToFixList = new List<ItemBase>(3);
     public List<ItemBase> BrokenItemList = new List<ItemBase>(3);

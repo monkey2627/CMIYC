@@ -27,6 +27,7 @@ public class MasterIdleState : MasterState
     {
         base.ExitState();
         master.Animator.SetBool("IsPlay", false);
+        master.isPlaying = false;
     }
 
     public override void UpdateState()
@@ -40,6 +41,7 @@ public class MasterIdleState : MasterState
         }
         master.Animator.SetBool("IsIdle", false);
         master.Animator.SetBool("IsPlay", false);
+        master.isPlaying = false;
         //master.Animator.SetFloat("FaceDirection", IdlePosition.x > master.transform.position.x ? 1f:0f);
         Vector3 targetPos = IdlePosition;
         
@@ -68,6 +70,7 @@ public class MasterIdleState : MasterState
         {
             master.Animator.SetBool("IsIdle", true);
             master.Animator.SetBool("IsPlay", true);
+            master.isPlaying = true;
             master.transform.position = IdlePosition;
             DoIdleAction();
         }
