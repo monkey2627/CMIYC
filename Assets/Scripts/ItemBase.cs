@@ -54,13 +54,18 @@ public class ItemBase : MonoBehaviour
         {
             if ((int)item < min)
                 min = (int)item;
-            if (item == Layer.Three)
+            if (item == (Layer) Cat.instance.layerNow)
                 isInThisLayer = true;
         }
         if (min > (int)Layer.Three)
             gameObject.GetComponent<SpriteRenderer>().DOFade(0.3f, 0.01f);
         else
             gameObject.GetComponent<SpriteRenderer>().DOFade(1f, 0.01f);
+
+        if (gameObject.name == "螺丝刀")
+        {
+            Debug.Log("min" + isInThisLayer + layer[0]);
+        }
 
     }
     public virtual void inter()

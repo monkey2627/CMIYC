@@ -11,17 +11,21 @@ public class ExpressBox : ItemBase
     public GameObject boxup;
     public GameObject boxDown;
     public GameObject luosidao;
+    public GameObject cube;
 
     /// <summary>
     /// 被猫咪抓挠，被推动，被狗破坏
     /// </summary>
     public override void inter()
     {
+        Debug.Log("scratch");
         base.inter();
+        cube.SetActive(false);
         Cat.instance.Scratch();
         enable = false;
         luosidao.SetActive(true);
         luosidao.GetComponent<LuoSiDao>().enable = true;
+        luosidao.GetComponent<LuoSiDao>().isInThisLayer = true;
         boxup.GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
         transform.GetComponent<SpriteRenderer>().DOFade(0, 0.5f);
         transform.GetComponent<Rigidbody>().isKinematic = true;

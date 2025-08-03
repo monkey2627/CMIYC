@@ -29,10 +29,7 @@ public class Cat : MonoBehaviour
     public GameObject[] herbSprites;
     private void Awake()
     {
-        instance = this;
-    }
-    private void Start()
-    {
+        instance = this; 
         materialNumber = -1;
         rb = GetComponent<Rigidbody>();
         layerNow = 3;
@@ -42,6 +39,10 @@ public class Cat : MonoBehaviour
         animator.SetBool("Back", false);
         enable = false;
         rb.freezeRotation = true;
+       
+    }
+    private void Start()
+    {
         dogLength = Dog.instance.gameObject.GetComponent<BoxCollider>().size.x;
     }
     bool isChangingLayer = false;
@@ -175,7 +176,13 @@ public class Cat : MonoBehaviour
     int unMoveTime = 0;
     private void Update()
     {
-      
+
+
+       if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.W)|| Input.GetKey(KeyCode.W)|| Input.GetKey(KeyCode.W)|| Input.GetKey(KeyCode.W)|| Input.GetKey(KeyCode.W))
+        {
+            sceneNow.EndObsearve();
+            staticTime = 0;
+        }
         AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
         #region tiaotiaoya 效果
         if (enable)
@@ -224,7 +231,8 @@ public class Cat : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.W))
                 {
-
+                    staticTime = 0;
+                    sceneNow.EndObsearve();
                     if (exihibitLayer < 1)
                     {
                         exihibitLayer++;
@@ -233,6 +241,8 @@ public class Cat : MonoBehaviour
                 }
                 else if (Input.GetKeyDown(KeyCode.S))
                 {
+                    staticTime = 0;
+                    sceneNow.EndObsearve();
                     if (exihibitLayer > 0)
                     {
                         exihibitLayer--;
@@ -248,8 +258,7 @@ public class Cat : MonoBehaviour
                         delay.transform.DOMove(new Vector3(0, 0, 0), 1).OnComplete(() => { waitingTime = false; });
                     }
                 }
-            }
-            
+            }          
         }
         #endregion
         #region 在柜子上
@@ -515,8 +524,6 @@ public class Cat : MonoBehaviour
         {
             Obsearve();
         }
-        else  
-            sceneNow.EndObsearve(); 
         ItemBase item = sceneNow.Detect();
         if(item)
         {
@@ -558,12 +565,14 @@ public class Cat : MonoBehaviour
         herbSprites[0].GetComponent<SpriteRenderer>().sortingOrder = 7;
         bubble.GetComponent<SpriteRenderer>().sortingOrder = 7;
         MeowIcon.GetComponent<SpriteRenderer>().sortingOrder = 7;
-        
+        luosiItem.GetComponent<SpriteRenderer>().sortingOrder = 7;
+        luosiItem.GetComponent<SpriteRenderer>().sortingLayerName = ((Layer)layerNow).ToString();
 
     }
     public GameObject luosiItem;
     public void GetLuoSi()
     {
+        Debug.Log("Get LUosi");
         luosiItem.SetActive(true);
         TongfengKou.instance.enable = true;
     }
@@ -582,6 +591,7 @@ public class Cat : MonoBehaviour
     }
     public void EndScratch()
     {
+        isScratching = false;
         animator.SetBool("Scratch", false);
     }
 
