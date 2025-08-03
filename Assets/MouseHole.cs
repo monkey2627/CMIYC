@@ -8,5 +8,6 @@ public class MouseHole : ItemBase
     {
         base.inter();
         Cat.instance.Hide();
+        TipPopManager.instance.ShowTip("Let the record show: I decline all associations with that ahem cartoonishly inept namesake.");
     }
 }
