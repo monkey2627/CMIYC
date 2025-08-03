@@ -12,15 +12,20 @@ public class Cup : ItemBase
     public GameObject crashIcon;
     public override void inter()
     {
-        Cat.instance.Push();
+        Cat.instance.Push(); 
+        enable = false;
         delay.transform.DOMove(new Vector3(0, 0, 0), 1f).OnComplete(() => { Cat.instance.StopPush(); });
-        transform.DOLocalMove(new Vector3(transform.localPosition.x - 0.1f, -40.43f, transform.localPosition.z),2f).OnComplete(()=> {
+        transform.DOLocalMove(new Vector3(-80.5f, -40.43f, transform.localPosition.z),2f).OnComplete(()=> {
 
-            enable = false;
-            crash.SetActive(true);
-            transform.GetComponent<SpriteRenderer>().DOFade(0, 0.2f).OnComplete(()=> { 
-                crashIcon.SetActive(true);
+          
+            crashIcon.SetActive(true);
+            transform.GetComponent<SpriteRenderer>().DOFade(0, 0.2f).OnComplete(()=> {  
+                
+                crashIcon.SetActive(false);
+                crash.SetActive(true);
+               
             });
+            gameObject.SetActive(false);
             //吸引主人
             AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.ItemBroken);
             EventHandler.ItemBroke(this);

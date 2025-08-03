@@ -357,6 +357,7 @@ public class Cat : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.W) && stateinfo.IsName("IDEL") && !isInCabinet && !isInExihibt) // 按下 W 键
             {
                 Debug.Log("yes");
+                Debug.Log("isCheckWall" + CheckForWall());
                 if (CheckForWall())
                     return;
                 if (layerNow > 1 || (layerNow == 1 && transform.position.x >= -66 && transform.position.x <= -47))
@@ -449,7 +450,7 @@ public class Cat : MonoBehaviour
                     move = true;
                     moveHorizontal = 1.0f; // 向右移动
                 }
-                //如果正在落地动作，不允许动
+                //如果正在落地动作，不允许动HI
                 if (stateinfo.IsName("OnFloor"))
                 {
                     animator.SetBool("Walk", false);
@@ -747,16 +748,11 @@ public class Cat : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         lastCollision = collision;
-        Debug.Log(collision.gameObject.name);
         if (collision.gameObject.tag == "Dog" && isJumping && !isMeowing)
         {
             isOnDog = true;
             isJumping = false;
             isGrounded = true;
-            Debug.Log("yes");
-            Debug.Log(collision.gameObject.name);
-            Debug.Log(collision.gameObject.tag);
-            Dog.instance.CatJumpOn();
             rb.isKinematic = true;
             rb.velocity = Vector3.zero; // 将速度设置为0
             gap = transform.position - Dog.instance.transform.position;

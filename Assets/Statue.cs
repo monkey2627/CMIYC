@@ -5,56 +5,35 @@ using UnityEngine;
 
 public class Statue : ItemBase
 {
-    public GameObject broken;
-    private void Update()
-    {
-        if(GetComponent<Rigidbody>().velocity.y < -0.5f)
-        {
-            Debug.Log("sjsah");
-            Drop();
-
-        }
-    }
-    public void Drop()
-    {
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Statue>().enable = false;
-        transform.DOLocalMove(new Vector3(transform.localPosition.x, -3.21f,transform.localPosition.z), 3f).OnComplete(
-            () => {
-                broken.SetActive(true);
-                GetComponent<Rigidbody>().isKinematic = false;
-                GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
-                gameObject.SetActive(false);
-                gameObject.transform.position = new Vector3(transform.localPosition.x, -3.21f, transform.localPosition.z);
-                //吸引主人
-                AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.ItemBroken);
-                EventHandler.ItemBroke(this);
-                EventHandler.AttentionEventHappen(attentionEvent);
-            });
-    }
+    public GameObject crashIcon;
+    public GameObject crash;
+    public GameObject delay;
+    
     /// <summary>
     /// 猫把展品推下去
     /// </summary>
     public override void inter()
     {
-        base.inter();
-        //显示文本
-        
-        
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Cat"))
-        {
-            Cat.instance.Push();
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
+        Cat.instance.Push(); 
+        enable = false;
+        delay.transform.DOMove(new Vector3(0, 0, 0), 1f).OnComplete(() => { Cat.instance.StopPush(); });
+        transform.DOLocalMove(new Vector3(2.6f, -3.58f, transform.localPosition.z), 2f).OnComplete(() => {
 
-        if (collision.gameObject.CompareTag("Cat"))
-        {
-            Cat.instance.StopPush();
-        }
+           
+            crashIcon.SetActive(true);
+            transform.GetComponent<SpriteRenderer>().DOFade(0, 0.2f).OnComplete(() => {
+
+                crashIcon.SetActive(false);
+                crash.SetActive(true);
+
+            });
+            gameObject.SetActive(false);
+            //吸引主人
+            AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.ItemBroken);
+            EventHandler.AttentionEventHappen(attentionEvent);
+
+        });
+
     }
+ 
 }
