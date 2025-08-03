@@ -79,7 +79,7 @@ public class Cat : MonoBehaviour
 
         return false;
     }
-
+    public AudioSource audioSource;
     public static bool CheckForWallFront()
     {
         // 获取 Cat.instance.gameObject 的位置
@@ -511,6 +511,8 @@ public class Cat : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Q))//停止按Q键代表猫咪不叫了，此时狗不走
         {
+            audioSource.clip = null;
+            audioSource.Stop();
             MeowIcon.SetActive(false);
             isMeowing = false;
             Dog.instance.rb.isKinematic = false;
@@ -660,6 +662,7 @@ public class Cat : MonoBehaviour
     {
         sceneNow.Obsearve();
     }
+    public AudioClip mew;
     /// <summary>
     /// 喵喵叫，吸引狗和猫
     /// 1.若和狗的距离大于A，狗往猫咪叫的地方走，直到和猫咪距离小于3狗
@@ -670,6 +673,8 @@ public class Cat : MonoBehaviour
     /// </summary>
     public void Meow()
     {
+        audioSource.clip = mew;
+        audioSource.Play();
         staticTime = 0;
         EndHide();
         sceneNow.EndObsearve();
@@ -715,13 +720,16 @@ public class Cat : MonoBehaviour
     public float jumpForce = 5.0f; // 跳跃力
     public bool isJumping = false;
     public int jumpCount = 0;
-
+    public AudioClip jumpClip;
     public  float maxJumpHeight = 6.0f; // 最大弹跳高度
     /// <summary>
     /// 处理跳跃时的逻辑
     /// </summary>
     public void Jump()
     {
+        audioSource.clip = jumpClip;
+        audioSource.loop = false;
+        audioSource.Play();
         Debug.Log("jump");
         EndHide();
         finishOnFloorAni = false;
