@@ -6,9 +6,14 @@ public class Window : ItemBase
 {
     public SpriteRenderer viewRenderer;
     public Sprite daskSprite;
+    public GameObject meowItem;
     public override void inter()
     {
         base.inter();
+        meowItem.SetActive(true);
+        //吸引主人
+        AttentionEvent attentionEvent = new AttentionEvent(transform, AttentionEventType.WildCatMeow);
+        EventHandler.AttentionEventHappen(attentionEvent);
         if (interactCnt >= 0)
         {
             TipPopManager.instance.ShowTip("Target group spotted in the eastern bushes—potential escape accomplices. If only they understand Meow-rse code... " +
