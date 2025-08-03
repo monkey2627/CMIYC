@@ -117,7 +117,7 @@ public class Cat : MonoBehaviour
         Vector3 direction = new Vector3(0,0,1f);
 
         // 射线的最大长度
-        float maxDistance = 3f;
+        float maxDistance = 2f;
 
         // 存储碰撞信息
         RaycastHit hit;
@@ -147,7 +147,7 @@ public class Cat : MonoBehaviour
 
 
         // 射线的最大长度
-        float maxDistance = 3f;
+        float maxDistance = 2f;
 
         Debug
 .DrawRay(origin, direction * maxDistance, Color.red);
