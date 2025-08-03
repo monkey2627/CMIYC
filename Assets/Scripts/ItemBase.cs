@@ -106,4 +106,16 @@ public class ItemBase : MonoBehaviour
     {
 
     }
+
+    public virtual void PlayRecoverAnimation()
+    {
+        Animator animator = gameObject.GetComponent<Animator>();
+        if (animator != null)
+            animator.Play("ItemRecover");
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
 }
