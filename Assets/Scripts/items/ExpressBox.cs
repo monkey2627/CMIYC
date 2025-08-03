@@ -10,6 +10,7 @@ public class ExpressBox : ItemBase
 {
     public GameObject boxup;
     public GameObject boxDown;
+    public GameObject luosidao;
 
     /// <summary>
     /// 被猫咪抓挠，被推动，被狗破坏
@@ -19,7 +20,8 @@ public class ExpressBox : ItemBase
         base.inter();
         Cat.instance.Scratch();
         enable = false;
-        
+        luosidao.SetActive(true);
+        luosidao.GetComponent<LuoSiDao>().enable = true;
         boxup.GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
         transform.GetComponent<SpriteRenderer>().DOFade(0, 0.5f);
         transform.GetComponent<Rigidbody>().isKinematic = true;
